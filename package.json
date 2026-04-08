@@ -1,0 +1,49 @@
+{
+  "name": "nyumba-sasa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "cap:sync": "npx cap sync",
+    "cap:ios": "npx cap sync && npx cap open ios",
+    "cap:android": "npx cap sync && npx cap open android",
+    "icons": "node scripts/generate-icon.js && npx @capacitor/assets generate --iconBackgroundColor '#FFE135' --iconBackgroundColorDark '#1A0A3C' --splashBackgroundColor '#FFE135' --splashBackgroundColorDark '#1A0A3C'",
+    "mobile:setup": "chmod +x scripts/setup-mobile.sh && ./scripts/setup-mobile.sh"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@ant-design/nextjs-registry": "^1.0.2",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.46.1",
+    "antd": "^5.24.6",
+    "cloudinary": "^2.5.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.38.0",
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.6.0",
+    "tailwind-merge": "^2.5.4"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^6.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.27",
+    "eslint": "^8",
+    "eslint-config-next": "^15.3.0",
+    "postcss": "^8",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,163 @@
+name: Build iOS (IPA)
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version name (e.g. 1.0.1)'
+        required: false
+        default: '1.0.0'
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Node.js ───────────────────────────────────────────────────────────
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ── 3. Capacitor sync ────────────────────────────────────────────────────
+      - name: Capacitor sync
+        run: npx cap sync ios
+        env:
+          NODE_ENV: production
+
+      # ── 4. CocoaPods ─────────────────────────────────────────────────────────
+      - name: Install CocoaPods
+        run: |
+          cd ios/App
+          pod install --repo-update
+
+      # ── 5. Import signing certificate ────────────────────────────────────────
+      - name: Import certificate
+        run: |
+          # Create temp keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/build.keychain
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 20)
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # Import certificate (.p12)
+          echo "${{ secrets.IOS_CERTIFICATE_BASE64 }}" | base64 --decode > $RUNNER_TEMP/certificate.p12
+          security import $RUNNER_TEMP/certificate.p12 \
+            -P "${{ secrets.IOS_CERTIFICATE_PASSWORD }}" \
+            -A -t cert -f pkcs12 \
+            -k $KEYCHAIN_PATH
+
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # Import provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}" | base64 --decode \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/nyumbasasa.mobileprovision
+
+          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
+          echo "KEYCHAIN_PASSWORD=$KEYCHAIN_PASSWORD" >> $GITHUB_ENV
+
+      # ── 6. Bump version ──────────────────────────────────────────────────────
+      - name: Set version
+        run: |
+          VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
+          BUILD="${{ github.run_number }}"
+          cd ios/App
+          xcrun agvtool new-marketing-version $VERSION
+          xcrun agvtool new-version -all $BUILD
+
+      # ── 7. Build & Archive ───────────────────────────────────────────────────
+      - name: Build iOS archive
+        run: |
+          xcodebuild archive \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/App.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGN_STYLE=Manual \
+            PROVISIONING_PROFILE_SPECIFIER="nyumbasasa" \
+            DEVELOPMENT_TEAM="${{ secrets.APPLE_TEAM_ID }}" \
+            CODE_SIGN_IDENTITY="iPhone Distribution" \
+            -allowProvisioningUpdates \
+            | xcpretty
+
+      # ── 8. Export IPA ────────────────────────────────────────────────────────
+      - name: Create export options plist
+        run: |
+          cat > $RUNNER_TEMP/ExportOptions.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>${{ secrets.APPLE_TEAM_ID }}</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>compileBitcode</key>
+            <false/>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.nyumbasasa.app</key>
+              <string>nyumbasasa</string>
+            </dict>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath $RUNNER_TEMP/App.xcarchive \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist \
+            -exportPath $RUNNER_TEMP/ipa \
+            | xcpretty
+
+      # ── 9. Rename IPA ────────────────────────────────────────────────────────
+      - name: Rename IPA
+        run: |
+          VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
+          BUILD="${{ github.run_number }}"
+          mv $RUNNER_TEMP/ipa/App.ipa \
+             $RUNNER_TEMP/ipa/nyumbasasa-${VERSION}-${BUILD}.ipa
+
+      # ── 10. Upload IPA artifact ──────────────────────────────────────────────
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: nyumbasasa-ipa
+          path: ${{ runner.temp }}/ipa/*.ipa
+          retention-days: 30
+
+      # ── 11. Create GitHub Release (on tag push only) ─────────────────────────
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ runner.temp }}/ipa/*.ipa
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 12. Cleanup keychain ─────────────────────────────────────────────────
+      - name: Clean up keychain
+        if: always()
+        run: security delete-keychain $RUNNER_TEMP/build.keychain 2>/dev/null || true

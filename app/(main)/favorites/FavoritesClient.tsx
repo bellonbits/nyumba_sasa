@@ -1,0 +1,54 @@
+"use client";
+
+import { useState } from "react";
+import { Empty } from "antd";
+import { HeartOutlined } from "@ant-design/icons";
+import PropertyCard from "@/components/PropertyCard";
+import { createClient } from "@/lib/supabase/client";
+import type { Favorite } from "@/lib/types";
+
+export default function FavoritesClient({ favorites: initial, userId }: { favorites: Favorite[]; userId: string }) {
+  const [favorites, setFavorites] = useState(initial);
+
+  async function removeFavorite(listingId: string) {
+    const supabase = createClient();
+    await supabase.from("favorites").delete().eq("user_id", userId).eq("listing_id", listingId);
+    setFavorites((prev) => prev.filter((f) => f.listing_id !== listingId));
+  }
+
+  return (
+    <div className="px-4 min-h-screen" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 48px)" }}>
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold text-gray-900">Saved Homes</h1>
+        <p className="text-gray-400 text-sm mt-0.5">
+          {favorites.length} saved {favorites.length === 1 ? "property" : "properties"}
+        </p>
+      </div>
+
+      {favorites.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="h-16 w-16 rounded-full bg-orange-50 flex items-center justify-center mb-4">
+            <HeartOutlined className="text-[#FF6A00] text-2xl" />
+          </div>
+          <p className="font-semibold text-gray-700 text-base">No saved homes yet</p>
+          <p className="text-sm text-gray-400 mt-1 text-center">
+            Tap the heart on any listing to save it here
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4 pb-6">
+          {favorites.map((fav) =>
+            fav.listing ? (
+              <PropertyCard
+                key={fav.id}
+                listing={fav.listing}
+                isFavorite
+                onToggleFavorite={() => removeFavorite(fav.listing_id)}
+              />
+            ) : null
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: #F5F5F8;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Safe areas for Capacitor / iOS notch */
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Purple gradient used in CTAs */
+  .bg-purple-gradient {
+    background: linear-gradient(135deg, #7B2FBE 0%, #9B59B6 100%);
+  }
+
+  /* Soft purple background */
+  .bg-purple-soft {
+    background-color: #F0EEF8;
+  }
+
+  @media (min-width: 768px) {
+    .pb-safe { padding-bottom: 0; }
+    .pt-safe { padding-top: 0; }
+  }
+}
