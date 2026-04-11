@@ -4,12 +4,11 @@
  */
 import { createClient } from "@/lib/supabase/client";
 
-// Deployment URL for the FastAPI backend (once deployed to Back4App)
-const FASTAPI_URL = "https://nyumbasasa-fastapi.b4a.app"; // Update with actual URL after deploy
-const NEXT_API_URL = "https://nyumbasasa-ten.vercel.app";
+const FASTAPI_URL = "https://nyumbasasa-fastapi.b4a.app"; // Old standalone deployment
+const NEXT_API_URL = "https://nyumbasasa-ten.vercel.app"; // Current Vercel deployment
 
-// Switching to FastAPI as the primary backend provider
-const API_BASE_URL = FASTAPI_URL;
+// Switch back to Vercel URL because FastAPI is now hosted within Vercel Serverless!
+const API_BASE_URL = NEXT_API_URL;
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
   // Prefix path with base URL if it starts with /api

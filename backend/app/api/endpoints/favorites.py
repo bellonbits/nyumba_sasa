@@ -4,11 +4,12 @@ from sqlmodel import select, and_
 from app.db.session import get_session
 from app.models.base import Favorite, Listing
 from app.core.security import verify_supabase_jwt
+from app.schemas import APIResponse
 import uuid
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("/", response_model=APIResponse)
 async def get_my_favorites(
     user_data: dict = Depends(verify_supabase_jwt),
     db: AsyncSession = Depends(get_session)
@@ -17,9 +18,9 @@ async def get_my_favorites(
     query = select(Favorite).where(Favorite.user_id == user_id)
     result = await db.execute(query)
     favorites = result.scalars().all()
-    return {"data": favorites, "error": None}
+    return APIResponse(data=favorites)
 
-@router.post("/{listing_id}")
+@router.post("/{listing_id}", response_model=APIResponse)
 async def toggle_favorite(
     listing_id: str,
     user_data: dict = Depends(verify_supabase_jwt),
@@ -27,14 +28,14 @@ async def toggle_favorite(
 ):
     user_id = user_data["sub"]
     
-    # Check if exists
+    # Check if existing
     query = select(Favorite).where(and_(Favorite.user_id == user_id, Favorite.listing_id == listing_id))
     existing = (await db.execute(query)).scalar_one_or_none()
     
     if existing:
         await db.delete(existing)
         await db.commit()
-        return {"data": None, "message": "Removed from favorites"}
+        return APIResponse(data=None, message="Removed from favorites")
     else:
         new_fav = Favorite(
             id=str(uuid.uuid4()),
@@ -44,4 +45,4 @@ async def toggle_favorite(
         db.add(new_fav)
         await db.commit()
         await db.refresh(new_fav)
-        return {"data": new_fav, "message": "Added to favorites"}
+        return APIResponse(data=new_fav, message="Added to favorites")

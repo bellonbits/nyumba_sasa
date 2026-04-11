@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.endpoints import listings, users, favorites, messages
+from app.api.endpoints import listings, users, favorites, messages, upload
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -23,6 +23,7 @@ app.include_router(listings.router, prefix=f"{settings.API_V1_STR}/listings", ta
 app.include_router(users.router, prefix=f"{settings.API_V1_STR}/users", tags=["users"])
 app.include_router(favorites.router, prefix=f"{settings.API_V1_STR}/favorites", tags=["favorites"])
 app.include_router(messages.router, prefix=f"{settings.API_V1_STR}/messages", tags=["messages"])
+app.include_router(upload.router, prefix=f"{settings.API_V1_STR}/upload", tags=["upload"])
 
 @app.get("/")
 async def root():

@@ -15,7 +15,11 @@ class Settings(BaseSettings):
     # Database (Postgres)
     DATABASE_URL: str
 
-    
+    # Cloudinary
+    CLOUDINARY_CLOUD_NAME: str = Field(alias="NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY: str
+    CLOUDINARY_API_SECRET: str
+
     class Config:
         case_sensitive = True
         env_file = ".env"
