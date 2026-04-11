@@ -25,14 +25,6 @@ app.include_router(favorites.router, prefix=f"{settings.API_V1_STR}/favorites", 
 app.include_router(messages.router, prefix=f"{settings.API_V1_STR}/messages", tags=["messages"])
 app.include_router(upload.router, prefix=f"{settings.API_V1_STR}/upload", tags=["upload"])
 
-@app.get(f"{settings.API_V1_STR}/init-db")
-async def initialize_database():
-    from app.models.base import SQLModel
-    from app.db.session import engine
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-    return {"message": "Database tables created securely"}
-
 @app.get("/")
 async def root():
     return {
