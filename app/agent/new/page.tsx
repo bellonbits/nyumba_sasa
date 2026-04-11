@@ -7,6 +7,8 @@ import { Form, Input, Button, Upload, Select, InputNumber, App, Row, Col } from 
 import { ArrowLeftOutlined, PlusOutlined, LoadingOutlined, HomeOutlined, KeyOutlined } from "@ant-design/icons";
 import type { UploadFile } from "antd";
 
+import { apiFetch } from "@/lib/api";
+
 const AMENITIES = ["WiFi", "Parking", "Water", "Electricity", "Garden", "Security", "Pool", "Gym", "Furnished", "CCTV"];
 const CITIES = ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Lagos", "Accra", "Dar es Salaam", "Kampala"];
 
@@ -23,7 +25,7 @@ export default function NewListingPage() {
     setUploadingCount((c) => c + 1);
     const fd = new FormData();
     fd.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    const res = await apiFetch("/api/upload", { method: "POST", body: fd });
     const json = await res.json();
     if (json.data?.url) {
       setUploadedImages((prev) => [...prev, json.data.url]);
@@ -40,9 +42,8 @@ export default function NewListingPage() {
       return;
     }
     setLoading(true);
-    const res = await fetch("/api/listings", {
+    const res = await apiFetch("/api/listings", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, images: uploadedImages, amenities: selectedAmenities }),
     });
     const json = await res.json();

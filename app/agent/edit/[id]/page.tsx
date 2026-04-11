@@ -7,6 +7,8 @@ import { Form, Input, Button, Upload, Select, InputNumber, App, Row, Col, Spin }
 import { ArrowLeftOutlined, PlusOutlined, LoadingOutlined, HomeOutlined, KeyOutlined } from "@ant-design/icons";
 import type { Listing } from "@/lib/types";
 
+import { apiFetch } from "@/lib/api";
+
 const AMENITIES = ["WiFi", "Parking", "Water", "Electricity", "Garden", "Security", "Pool", "Gym", "Furnished", "CCTV"];
 const CITIES = ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Lagos", "Accra", "Dar es Salaam", "Kampala"];
 
@@ -24,7 +26,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
   useEffect(() => {
     params.then(async ({ id }) => {
       setListingId(id);
-      const res = await fetch(`/api/listings/${id}`);
+      const res = await apiFetch(`/api/listings/${id}`);
       const json = await res.json();
       if (json.data) {
         const l: Listing = json.data;
@@ -50,7 +52,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
     setUploadingCount((c) => c + 1);
     const fd = new FormData();
     fd.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    const res = await apiFetch("/api/upload", { method: "POST", body: fd });
     const json = await res.json();
     if (json.data?.url) setUploadedImages((prev) => [...prev, json.data.url]);
     else message.error("Upload failed");
@@ -60,9 +62,8 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
 
   async function handleSubmit(values: any) {
     setLoading(true);
-    const res = await fetch(`/api/listings/${listingId}`, {
+    const res = await apiFetch(`/api/listings/${listingId}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...values, images: uploadedImages, amenities: selectedAmenities }),
     });
     if (res.ok) {

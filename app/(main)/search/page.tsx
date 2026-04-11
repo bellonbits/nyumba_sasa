@@ -9,6 +9,8 @@ import PropertyCardSkeleton from "@/components/PropertyCardSkeleton";
 import type { Listing, ListingFilters } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
+import { apiFetch } from "@/lib/api";
+
 const SORT_OPTS = ["Most Relevant", "Newest", "Price: Low to High", "Price: High to Low"];
 const CITIES = ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Lagos", "Accra", "Dar es Salaam", "Kampala", "Kigali"];
 
@@ -33,7 +35,7 @@ export default function SearchPage() {
     if (priceRange[1] < 500000) params.set("max_price", String(priceRange[1]));
     if (filters.bedrooms) params.set("bedrooms", String(filters.bedrooms));
     try {
-      const res = await fetch(`/api/listings?${params}`);
+      const res = await apiFetch(`/api/listings?${params}`);
       const json = await res.json();
       setListings(json.data ?? []);
     } finally {

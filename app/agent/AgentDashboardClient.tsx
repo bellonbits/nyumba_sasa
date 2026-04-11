@@ -11,6 +11,8 @@ import {
 import { formatPrice, formatDate } from "@/lib/utils";
 import type { Listing } from "@/lib/types";
 
+import { apiFetch } from "@/lib/api";
+
 const STATUS_COLORS: Record<string, string> = { approved: "success", pending: "warning", rejected: "error" };
 
 export default function AgentDashboardClient({ listings: initial, agentName }: { listings: Listing[]; agentName: string }) {
@@ -32,7 +34,7 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
       okButtonProps: { danger: true },
       cancelText: "Cancel",
       onOk: async () => {
-        const res = await fetch(`/api/listings/${id}`, { method: "DELETE" });
+        const res = await apiFetch(`/api/listings/${id}`, { method: "DELETE" });
         if (res.ok) {
           setListings((prev) => prev.filter((l) => l.id !== id));
           message.success("Listing deleted");

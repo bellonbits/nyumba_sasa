@@ -10,6 +10,8 @@ import {
 } from "@ant-design/icons";
 import { formatPrice, formatDate } from "@/lib/utils";
 
+import { apiFetch } from "@/lib/api";
+
 interface Stats { totalListings: number; totalUsers: number; totalAgents: number; pendingCount: number; }
 
 export default function AdminDashboardClient({ pendingListings: initial, stats }: { pendingListings: any[]; stats: Stats }) {
@@ -19,9 +21,8 @@ export default function AdminDashboardClient({ pendingListings: initial, stats }
 
   async function updateStatus(id: string, status: "approved" | "rejected") {
     setProcessing(id);
-    const res = await fetch(`/api/listings/${id}`, {
+    const res = await apiFetch(`/api/listings/${id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
     if (res.ok) {

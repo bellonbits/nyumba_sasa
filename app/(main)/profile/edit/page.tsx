@@ -8,6 +8,8 @@ import { ArrowLeftOutlined, UserOutlined, PhoneOutlined, CameraOutlined } from "
 import { createClient } from "@/lib/supabase/client";
 import { getInitials } from "@/lib/utils";
 
+import { apiFetch } from "@/lib/api";
+
 export default function EditProfilePage() {
   const router = useRouter();
   const { message } = App.useApp();
@@ -30,9 +32,8 @@ export default function EditProfilePage() {
 
   async function handleSave(values: { name: string; phone: string }) {
     setLoading(true);
-    const res = await fetch(`/api/users/${profile.id}`, {
+    const res = await apiFetch(`/api/users/${profile.id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
     if (res.ok) {
@@ -48,15 +49,14 @@ export default function EditProfilePage() {
     setUploading(true);
     const fd = new FormData();
     fd.append("file", file);
-    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    const res = await apiFetch("/api/upload", { method: "POST", body: fd });
     const json = await res.json();
     if (json.data?.url) {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        await fetch(`/api/users/${user.id}`, {
+        await apiFetch(`/api/users/${user.id}`, {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ avatar_url: json.data.url }),
         });
         setProfile((p: any) => ({ ...p, avatar_url: json.data.url }));

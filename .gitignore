@@ -20,3 +20,4 @@ android/
 # Android signing
 *.keystore
 *.jks
+.vercel
