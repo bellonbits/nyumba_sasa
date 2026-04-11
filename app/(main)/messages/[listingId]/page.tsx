@@ -1,62 +1,101 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect, notFound } from "next/navigation";
-import ChatClient from "./ChatClient";
+"use client";
 
-export default async function ChatPage({
-  params,
-  searchParams,
-}: {
+import { useState, useEffect, use } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import ChatClient from "./ChatClient";
+import { apiFetch } from "@/lib/api";
+
+interface PageProps {
   params: Promise<{ listingId: string }>;
   searchParams: Promise<{ partner?: string }>;
-}) {
-  const { listingId } = await params;
-  const { partner } = await searchParams;
+}
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+export default function ChatPage({ params, searchParams }: PageProps) {
+  const router = useRouter();
+  const sp = useSearchParams();
+  const { listingId } = use(params);
+  const partnerId = sp.get("partner") ?? "";
 
-  if (!user) redirect("/login");
+  const [listing, setListing] = useState<any>(null);
+  const [partnerProfile, setPartnerProfile] = useState<any>(null);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const partnerId = partner ?? "";
+  useEffect(() => {
+    async function loadChatData() {
+      if (!partnerId) {
+        router.push("/messages");
+        return;
+      }
 
-  if (!partnerId) notFound();
+      setLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-  // Fetch listing info
-  const { data: listing } = await supabase
-    .from("listings")
-    .select("id, title, images")
-    .eq("id", listingId)
-    .single();
+        if (!user) {
+          router.push("/login");
+          return;
+        }
 
-  // Fetch partner profile
-  const { data: partnerProfile } = await supabase
-    .from("users")
-    .select("id, name, phone, avatar_url")
-    .eq("id", partnerId)
-    .single();
+        setCurrentUserId(user.id);
 
-  // Mark incoming messages as read
-  await supabase
-    .from("messages")
-    .update({ is_read: true })
-    .eq("listing_id", listingId)
-    .eq("sender_id", partnerId)
-    .eq("receiver_id", user.id);
+        // 1. Fetch listing info
+        const listingRes = await apiFetch(`/api/listings/${listingId}`);
+        const listingJson = await listingRes.json();
+        setListing(listingJson.data);
 
-  // Fetch messages
-  const { data: messages } = await supabase
-    .from("messages")
-    .select("*")
-    .eq("listing_id", listingId)
-    .or(`and(sender_id.eq.${user.id},receiver_id.eq.${partnerId}),and(sender_id.eq.${partnerId},receiver_id.eq.${user.id})`)
-    .order("created_at", { ascending: true });
+        // 2. Fetch partner profile
+        const partnerRes = await apiFetch(`/api/users/${partnerId}`);
+        const partnerJson = await partnerRes.json();
+        setPartnerProfile(partnerJson.data);
+
+        // 3. Mark incoming messages as read (FastAPI endpoint)
+        // Find existing messages from partner that are unread
+        const msgsRes = await apiFetch("/api/messages");
+        const msgsJson = await msgsRes.json();
+        const allMsgs = msgsJson.data ?? [];
+        
+        const relevant = allMsgs.filter((m: any) => 
+          m.listing_id === listingId && 
+          ((m.sender_id === user.id && m.receiver_id === partnerId) || 
+           (m.sender_id === partnerId && m.receiver_id === user.id))
+        ).sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+
+        // Mark unread as read
+        const unread = relevant.filter((m: any) => !m.is_read && m.receiver_id === user.id);
+        for (const m of unread) {
+          await apiFetch(`/api/messages/${m.id}/read`, { method: "PATCH" });
+        }
+
+        setMessages(relevant);
+
+      } catch (err) {
+        console.error("Failed to load chat:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadChatData();
+  }, [listingId, partnerId, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="h-8 w-8 border-2 border-[#FF6A00] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <ChatClient
       listing={listing}
       partner={partnerProfile}
-      messages={messages ?? []}
-      currentUserId={user.id}
+      messages={messages}
+      currentUserId={currentUserId!}
     />
   );
 }

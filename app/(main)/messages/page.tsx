@@ -1,35 +1,62 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import MessagesClient from "./MessagesClient";
+import { apiFetch } from "@/lib/api";
 
-export default async function MessagesPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+export default function MessagesPage() {
+  const router = useRouter();
+  const [conversations, setConversations] = useState<any[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!user) redirect("/login");
+  useEffect(() => {
+    async function loadConversations() {
+      setLoading(true);
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-  // Get all conversations: latest message per listing+counterparty
-  const { data: messages } = await supabase
-    .from("messages")
-    .select(`
-      *,
-      sender:users!messages_sender_id_fkey(id, name, avatar_url),
-      receiver:users!messages_receiver_id_fkey(id, name, avatar_url),
-      listing:listings(id, title, images)
-    `)
-    .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
-    .order("created_at", { ascending: false });
+        if (!user) {
+          router.push("/login");
+          return;
+        }
 
-  // Deduplicate: one entry per listing conversation
-  const seen = new Set<string>();
-  const conversations = (messages ?? []).filter((msg) => {
-    const key = `${msg.listing_id}-${
-      msg.sender_id === user.id ? msg.receiver_id : msg.sender_id
-    }`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+        setCurrentUserId(user.id);
+        const res = await apiFetch("/api/messages");
+        const json = await res.json();
+        const messages = json.data ?? [];
 
-  return <MessagesClient conversations={conversations} currentUserId={user.id} />;
+        // Deduplicate: one entry per listing conversation
+        const seen = new Set<string>();
+        const uniqueConversations = messages.filter((msg: any) => {
+          const otherId = msg.sender_id === user.id ? msg.receiver_id : msg.sender_id;
+          const key = `${msg.listing_id}-${otherId}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+
+        setConversations(uniqueConversations);
+      } catch (err) {
+        console.error("Failed to load messages:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadConversations();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="h-8 w-8 border-2 border-[#FF6A00] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return <MessagesClient conversations={conversations} currentUserId={currentUserId!} />;
 }
