@@ -5,7 +5,7 @@
 import { createClient } from "@/lib/supabase/client";
 
 const FASTAPI_URL = "https://nyumbasasa-fastapi.b4a.app"; // Old standalone deployment
-const NEXT_API_URL = "https://nyumbasasa-ten.vercel.app"; // Current Vercel deployment
+const NEXT_API_URL = "https://nyumba-sasa.vercel.app"; // Current Vercel deployment
 
 // Switch back to Vercel URL because FastAPI is now hosted within Vercel Serverless!
 const API_BASE_URL = NEXT_API_URL;
