@@ -37,7 +37,7 @@ async function getLocalUser() {
 }
 
 export async function createClient() {
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://api.guri24.com:8000";
 
   return {
     auth: {

@@ -4,7 +4,7 @@
  */
 import { createClient } from "@/lib/supabase/client";
 
-const FASTAPI_URL = process.env.NEXT_PUBLIC_FASTAPI_URL || "http://localhost:8000";
+const FASTAPI_URL = process.env.NEXT_PUBLIC_FASTAPI_URL || "http://api.guri24.com:8000";
 const NEXT_API_URL = process.env.NEXT_PUBLIC_API_URL || FASTAPI_URL;
 
 // Dynamic API routing based on environment configuration (e.g. Docker/Podman local ports)

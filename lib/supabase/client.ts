@@ -1,6 +1,6 @@
 "use client";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://api.guri24.com:8000";
 
 // Client-side JWT Decoder (Zero library dependency)
 function parseJwt(token: string) {
