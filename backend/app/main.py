@@ -11,6 +11,11 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def on_startup():
+    import os
+    if os.getenv("VERCEL") is not None:
+        print("Running in Vercel serverless environment: skipping startup database migrations to prevent cold-start timeouts.")
+        return
+        
     from sqlmodel import SQLModel
     from app.db.session import engine
     from app.models.base import User, Listing, Favorite, Message, VisitConfirmation, Notification # Import to register models
