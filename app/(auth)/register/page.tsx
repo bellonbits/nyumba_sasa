@@ -42,13 +42,37 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Password strength: 0-4
+  const pwStrength = (() => {
+    let s = 0;
+    if (password.length >= 6) s++;
+    if (password.length >= 10) s++;
+    if (/[A-Z]/.test(password)) s++;
+    if (/[0-9!@#$%^&*]/.test(password)) s++;
+    return s;
+  })();
+  const pwStrengthLabel = ["", "Weak", "Fair", "Good", "Strong"][pwStrength];
+  const pwStrengthColor = ["", "bg-red-400", "bg-amber-400", "bg-blue-400", "bg-green-500"][pwStrength];
+
+  const passwordsMatch = confirmPassword === "" || password === confirmPassword;
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
     setLoading(true);
     const supabase = createClient();
     const { data, error: authError } = await supabase.auth.signUp({
@@ -160,17 +184,76 @@ export default function RegisterPage() {
                 className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
             </div>
           </div>
+
+          {/* Password */}
           <div>
             <label className="text-sm font-semibold text-gray-700 block mb-1.5">Password</label>
-            <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
+            <div className={`flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14 transition-colors`}>
               <Lock className="text-gray-400 h-5 w-5 shrink-0" />
-              <input type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimum 6 characters" required minLength={6}
-                className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
+              <input
+                type={showPw ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Minimum 6 characters"
+                required
+                minLength={6}
+                className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
+              />
               <button type="button" onClick={() => setShowPw(p => !p)} className="text-gray-400 shrink-0 hover:text-gray-600 transition-colors">
                 {showPw ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
               </button>
             </div>
+            {/* Password strength bar */}
+            {password.length > 0 && (
+              <div className="mt-2 space-y-1">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                        i <= pwStrength ? pwStrengthColor : "bg-gray-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className={`text-xs font-medium ${
+                  pwStrength <= 1 ? "text-red-400" :
+                  pwStrength === 2 ? "text-amber-500" :
+                  pwStrength === 3 ? "text-blue-500" : "text-green-500"
+                }`}>{pwStrengthLabel}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 block mb-1.5">Confirm password</label>
+            <div className={`flex items-center gap-3 rounded-2xl px-4 h-14 transition-colors ${
+              !passwordsMatch ? "bg-red-50 border border-red-200" : "bg-[#F0EEF8]"
+            }`}>
+              <Lock className={`h-5 w-5 shrink-0 ${ !passwordsMatch ? "text-red-400" : "text-gray-400"}`} />
+              <input
+                type={showConfirmPw ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter your password"
+                required
+                className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
+              />
+              <button type="button" onClick={() => setShowConfirmPw(p => !p)} className="text-gray-400 shrink-0 hover:text-gray-600 transition-colors">
+                {showConfirmPw ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
+              </button>
+            </div>
+            {!passwordsMatch && (
+              <p className="text-xs text-red-500 mt-1.5 flex items-center gap-1">
+                <span>✗</span> Passwords do not match
+              </p>
+            )}
+            {passwordsMatch && confirmPassword.length > 0 && (
+              <p className="text-xs text-green-500 mt-1.5 flex items-center gap-1">
+                <span>✓</span> Passwords match
+              </p>
+            )}
           </div>
 
           <button

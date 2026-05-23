@@ -28,8 +28,8 @@ sudo apt install -y podman podman-compose
 ## 🚀 Running the Stack
 
 Our `docker-compose.yml` configures two core services:
-1.  **`backend`**: FastAPI Python container listening on port `8000` (with auto-reloading Uvicorn mounts).
-2.  **`postgres`**: PostgreSQL database container listening on host port `5433` (internal container port `5432`) for local sandbox operations.
+1.  **`backend`**: FastAPI Python container listening on port `8000` (with auto-reloading Uvicorn mounts, customizable via `BACKEND_PORT`).
+2.  **`postgres`**: PostgreSQL database container listening on host port `5435` (internal container port `5432`, customizable via `DB_PORT`) for local sandbox operations.
 
 The Next.js frontend is designed to be run directly on the host machine natively (using `npm run dev`), which provides maximum performance, absolute ease of local debugging, and instant hot-reloads.
 

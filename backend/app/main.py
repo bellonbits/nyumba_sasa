@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.endpoints import listings, users, favorites, messages, upload, auth, visits
+from app.api.endpoints import listings, users, favorites, messages, upload, auth, visits, notifications
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -13,7 +13,7 @@ app = FastAPI(
 async def on_startup():
     from sqlmodel import SQLModel
     from app.db.session import engine
-    from app.models.base import User, Listing, Favorite, Message, VisitConfirmation # Import to register models
+    from app.models.base import User, Listing, Favorite, Message, VisitConfirmation, Notification # Import to register models
     import sqlalchemy as sa
     async with engine.begin() as conn:
         try:
@@ -44,6 +44,7 @@ async def on_startup():
             await conn.execute(sa.text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS auto_expire_at TIMESTAMP;"))
         except Exception as e:
             print(f"Startup migration: columns may already exist or error: {e}")
+        # Create any new tables (notifications, etc.)
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
@@ -64,6 +65,7 @@ app.include_router(favorites.router, prefix=f"{settings.API_V1_STR}/favorites", 
 app.include_router(messages.router, prefix=f"{settings.API_V1_STR}/messages", tags=["messages"])
 app.include_router(upload.router, prefix=f"{settings.API_V1_STR}/upload", tags=["upload"])
 app.include_router(visits.router, prefix=f"{settings.API_V1_STR}/visits", tags=["visits"])
+app.include_router(notifications.router, prefix=f"{settings.API_V1_STR}/notifications", tags=["notifications"])
 
 # Mount static files for local filesystem fallback upload
 from fastapi.staticfiles import StaticFiles

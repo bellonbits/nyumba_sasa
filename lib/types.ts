@@ -123,6 +123,19 @@ export interface TrustBadge {
   description: string;
 }
 
+export type NotificationType = "info" | "message" | "listing" | "system" | "promo";
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  is_read: boolean;
+  listing_id?: string | null;
+  created_at: string;
+}
+
 export interface Message {
   id: string;
   sender_id: string;

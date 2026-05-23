@@ -10,7 +10,7 @@ services:
     volumes:
       - ./backend:/app:z
     ports:
-      - "8000:3000" # Expose internal API port (3000 inside Dockerfile is PORT) to 8000 outside
+      - "${BACKEND_PORT:-8000}:3000" # Expose internal API port (3000 inside Dockerfile is PORT) to host port
     environment:
       - PORT=3000
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://hvnvuqbmbvxzrwegdxmm.supabase.co}
@@ -29,7 +29,7 @@ services:
     container_name: nyumba_sasa_postgres
     image: postgres:15-alpine
     ports:
-      - "5433:5432"
+      - "${DB_PORT:-5435}:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

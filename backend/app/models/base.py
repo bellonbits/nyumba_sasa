@@ -116,3 +116,16 @@ class VisitConfirmation(SQLModel, table=True):
     was_available: bool = Field(default=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
+
+class Notification(SQLModel, table=True):
+    __tablename__ = "notifications"
+
+    id: str = Field(default_factory=lambda: __import__('uuid').uuid4().hex, primary_key=True)
+    user_id: str = Field(foreign_key="users.id", index=True)
+    type: str = Field(default="info")  # info | message | listing | system | promo
+    title: str = Field(default="")
+    body: str = Field(default="")
+    is_read: bool = Field(default=False)
+    listing_id: Optional[str] = Field(default=None)  # optional link to a listing
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+

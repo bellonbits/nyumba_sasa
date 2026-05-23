@@ -76,17 +76,24 @@ export default function EditListingPageClient({ id }: { id: string }) {
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="bg-white px-4 py-4 border-b border-gray-100 flex items-center gap-3">
-        <Link href="/agent"><Button type="text" icon={<ArrowLeft className="h-5 w-5 text-gray-700" />} className="px-0 text-gray-700 flex items-center" /></Link>
+        <Link href="/agent">
+          <Button type="text" icon={<ArrowLeft className="h-5 w-5 text-gray-700" />} className="px-0 text-gray-700 flex items-center" />
+        </Link>
         <h1 className="text-lg font-bold text-gray-900">Edit Listing</h1>
       </div>
 
-      {!listing ? (
-        <div className="h-[60vh] flex items-center justify-center">
-          <Spin size="large" />
-        </div>
-      ) : (
-        <div className="px-4 py-5">
-          <Form form={form} layout="vertical" onFinish={handleSubmit} size="large" requiredMark={false}>
+      {/*
+        Form always renders unconditionally so the useForm() instance
+        is always connected — Ant Design warns if Form isn't mounted.
+        The spinner is shown inside the Form when the listing hasn't loaded yet.
+      */}
+      <Form form={form} layout="vertical" onFinish={handleSubmit} size="large" requiredMark={false} className="px-4 py-5">
+        {!listing ? (
+          <div className="h-[60vh] flex items-center justify-center">
+            <Spin size="large" />
+          </div>
+        ) : (
+          <>
             {/* Photos */}
             <div className="mb-5">
               <p className="text-sm font-semibold text-gray-700 mb-2">Photos</p>
@@ -95,13 +102,18 @@ export default function EditListingPageClient({ id }: { id: string }) {
                   <div key={i} className="relative h-20 w-20 rounded-xl overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={url} alt="" className="h-full w-full object-cover" />
-                    <button type="button" onClick={() => setUploadedImages((p) => p.filter((_, j) => j !== i))}
-                      className="absolute top-1 right-1 h-5 w-5 rounded-full bg-black/60 text-white text-xs flex items-center justify-center">×</button>
+                    <button
+                      type="button"
+                      onClick={() => setUploadedImages((p) => p.filter((_, j) => j !== i))}
+                      className="absolute top-1 right-1 h-5 w-5 rounded-full bg-black/60 text-white text-xs flex items-center justify-center"
+                    >×</button>
                   </div>
                 ))}
                 <Upload accept="image/*" showUploadList={false} beforeUpload={handleImageUpload} multiple>
                   <div className="h-20 w-20 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#FF6A00] transition-colors">
-                    {uploadingCount > 0 ? <Loader2 className="h-5 w-5 text-[#FF6A00] animate-spin" /> : <Plus className="h-5 w-5 text-gray-400" />}
+                    {uploadingCount > 0
+                      ? <Loader2 className="h-5 w-5 text-[#FF6A00] animate-spin" />
+                      : <Plus className="h-5 w-5 text-gray-400" />}
                     <span className="text-[10px] text-gray-400 mt-1">Add photo</span>
                   </div>
                 </Upload>
@@ -162,21 +174,34 @@ export default function EditListingPageClient({ id }: { id: string }) {
               <p className="text-sm font-semibold text-gray-700 mb-2">Amenities</p>
               <div className="flex flex-wrap gap-2">
                 {AMENITIES.map((a) => (
-                  <button key={a} type="button"
+                  <button
+                    key={a}
+                    type="button"
                     onClick={() => setSelectedAmenities((p) => p.includes(a) ? p.filter((x) => x !== a) : [...p, a])}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${selectedAmenities.includes(a) ? "bg-[#FF6A00] text-white" : "bg-white border border-gray-200 text-gray-600"}`}>
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                      selectedAmenities.includes(a) ? "bg-[#FF6A00] text-white" : "bg-white border border-gray-200 text-gray-600"
+                    }`}
+                  >
                     {a}
                   </button>
                 ))}
               </div>
             </div>
 
-            <Button type="primary" htmlType="submit" size="large" block loading={loading} className="h-12 rounded-2xl font-semibold" style={{ background: "#FF6A00", borderColor: "#FF6A00" }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              block
+              loading={loading}
+              className="h-12 rounded-2xl font-semibold"
+              style={{ background: "#FF6A00", borderColor: "#FF6A00" }}
+            >
               Save Changes
             </Button>
-          </Form>
-        </div>
-      )}
+          </>
+        )}
+      </Form>
     </div>
   );
 }
