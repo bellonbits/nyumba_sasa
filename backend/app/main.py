@@ -78,9 +78,10 @@ app.include_router(notifications.router, prefix=f"{settings.API_V1_STR}/notifica
 
 # Mount static files for local filesystem fallback upload
 from fastapi.staticfiles import StaticFiles
-import os
-
-os.makedirs("app/static/uploads", exist_ok=True)
+try:
+    os.makedirs("app/static/uploads", exist_ok=True)
+except OSError as e:
+    print(f"Skipping static folder creation in read-only filesystem (e.g. Vercel): {e}")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
