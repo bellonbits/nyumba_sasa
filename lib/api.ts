@@ -4,11 +4,19 @@
  */
 import { createClient } from "@/lib/supabase/client";
 
-const FASTAPI_URL = process.env.NEXT_PUBLIC_FASTAPI_URL || "http://api.guri24.com:8000";
-const NEXT_API_URL = process.env.NEXT_PUBLIC_API_URL || FASTAPI_URL;
+const getApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  // On web browser deployments (e.g. Vercel), use relative paths to route through Vercel's proxy rewrite,
+  // bypassing the "Mixed Content" block entirely. On mobile (Capacitor) or Server, use the absolute URL.
+  if (typeof window !== "undefined" && !(window as any).Capacitor) {
+    return ""; 
+  }
+  return process.env.NEXT_PUBLIC_FASTAPI_URL || "http://api.guri24.com:8000";
+};
 
-// Dynamic API routing based on environment configuration (e.g. Docker/Podman local ports)
-const API_BASE_URL = NEXT_API_URL;
+const API_BASE_URL = getApiUrl();
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
   // Prefix path with base URL if it starts with /api

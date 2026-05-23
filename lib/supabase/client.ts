@@ -1,6 +1,16 @@
 "use client";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://api.guri24.com:8000";
+const getApiUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  if (typeof window !== "undefined" && !(window as any).Capacitor) {
+    return ""; 
+  }
+  return "http://api.guri24.com:8000";
+};
+
+const BASE_URL = getApiUrl();
 
 // Client-side JWT Decoder (Zero library dependency)
 function parseJwt(token: string) {
