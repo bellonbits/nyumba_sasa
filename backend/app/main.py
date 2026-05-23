@@ -17,8 +17,16 @@ async def on_startup():
     import sqlalchemy as sa
     db_host = settings.DATABASE_URL.split("@")[-1] if "@" in settings.DATABASE_URL else settings.DATABASE_URL
     print(f"Connecting to database: {db_host}")
+    # 1. Create all tables first in their own clean transaction
+    async with engine.begin() as conn:
+        print("Initializing database tables...")
+        await conn.run_sync(SQLModel.metadata.create_all)
+        print("Database tables initialized successfully.")
+    
+    # 2. Run column injections in a separate transaction so failures don't abort table creation
     async with engine.begin() as conn:
         try:
+            print("Applying dynamic database migrations...")
             # Dynamically inject missing columns to active PostgreSQL tables in Podman
             await conn.execute(sa.text("ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR;"))
             await conn.execute(sa.text("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash VARCHAR;"))
@@ -44,10 +52,9 @@ async def on_startup():
             await conn.execute(sa.text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS caretaker_confirmed BOOLEAN DEFAULT FALSE;"))
             await conn.execute(sa.text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS last_confirmed_available TIMESTAMP DEFAULT NOW();"))
             await conn.execute(sa.text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS auto_expire_at TIMESTAMP;"))
+            print("Database migrations applied successfully.")
         except Exception as e:
             print(f"Startup migration: columns may already exist or error: {e}")
-        # Create any new tables (notifications, etc.)
-        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 # CORS setup
