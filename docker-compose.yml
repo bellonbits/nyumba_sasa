@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  backend:
+    container_name: nyumba_sasa_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app:z
+    ports:
+      - "8000:3000" # Expose internal API port (3000 inside Dockerfile is PORT) to 8000 outside
+    environment:
+      - PORT=3000
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-https://hvnvuqbmbvxzrwegdxmm.supabase.co}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh2bnZ1cWJtYnZ4enJ3ZWdkeG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MjMyNzEsImV4cCI6MjA5MTE5OTI3MX0.4_okGuFj2dwj4qDu4f_zOUmhE37l2IRwliElWfdAGxM}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET:-your-supabase-jwt-secret}
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/nyumbasasa}
+      - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:-dqv6svufx}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-137589577951738}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-2wPvbcZL9P9JAj3biZHOz6dFrDY}
+    command: uvicorn app.main:app --host 0.0.0.0 --port 3000 --reload
+    depends_on:
+      - postgres
+
+  # PostgreSQL Local Database Service (Highly useful for local sandbox testing)
+  postgres:
+    container_name: nyumba_sasa_postgres
+    image: postgres:15-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nyumbasasa
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:z
+
+volumes:
+  postgres_data:

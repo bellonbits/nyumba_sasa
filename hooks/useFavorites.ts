@@ -16,9 +16,9 @@ export function useFavorites(userId: string | null) {
       .from("favorites")
       .select("listing_id")
       .eq("user_id", userId)
-      .then(({ data }) => {
+      .then(({ data }: any) => {
         if (data) {
-          setFavoriteIds(new Set(data.map((f) => f.listing_id)));
+          setFavoriteIds(new Set(data.map((f: any) => f.listing_id)));
         }
         setLoading(false);
       });

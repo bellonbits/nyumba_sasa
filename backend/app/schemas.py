@@ -22,6 +22,8 @@ class ListingCreate(BaseModel):
     area_sqm: Optional[float] = None
     images: List[str] = []
     amenities: List[str] = []
+    gps_lat: Optional[float] = None
+    gps_lng: Optional[float] = None
 
 class ListingUpdate(BaseModel):
     title: Optional[str] = None
@@ -35,6 +37,8 @@ class ListingUpdate(BaseModel):
     area_sqm: Optional[float] = None
     images: Optional[List[str]] = None
     amenities: Optional[List[str]] = None
+    gps_lat: Optional[float] = None
+    gps_lng: Optional[float] = None
 
 class ListingStatusUpdate(BaseModel):
     status: ListingStatus
@@ -52,3 +56,17 @@ class MessageCreate(BaseModel):
     receiver_id: str
     listing_id: str
     text: str
+
+# ---- Auth Schemas ----
+
+class UserRegister(BaseModel):
+    email: str
+    password: str
+    name: str = ""
+    phone: str = ""
+    role: UserRole = UserRole.tenant
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+

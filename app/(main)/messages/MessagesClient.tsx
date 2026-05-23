@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Empty, Badge, Avatar } from "antd";
-import { MessageOutlined } from "@ant-design/icons";
+import { MessageSquare } from "lucide-react";
 import { formatDate, getInitials, truncate } from "@/lib/utils";
 
 interface MessagesClientProps {
@@ -22,7 +22,7 @@ export default function MessagesClient({ conversations, currentUserId }: Message
       {conversations.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="h-16 w-16 rounded-full bg-orange-50 flex items-center justify-center mb-4">
-            <MessageOutlined className="text-[#FF6A00] text-2xl" />
+            <MessageSquare className="text-[#FF6A00] h-6 w-6" />
           </div>
           <p className="font-semibold text-gray-700">No messages yet</p>
           <p className="text-sm text-gray-400 mt-1">Contact an agent on a listing to start chatting</p>

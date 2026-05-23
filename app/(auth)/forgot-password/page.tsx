@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Form, Input, Button, Alert, Result } from "antd";
-import { MailOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { Mail, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ForgotPasswordPage() {
@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-white flex flex-col px-6" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
       <div className="pt-4 mb-8">
         <Link href="/login">
-          <Button type="text" icon={<ArrowLeftOutlined />} className="px-0 text-gray-700" />
+          <Button type="text" icon={<ArrowLeft size={18} />} className="px-0 text-gray-700 flex items-center gap-1.5" />
         </Link>
       </div>
       <div className="mb-8">
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
 
       <Form layout="vertical" onFinish={handleSubmit} size="large" requiredMark={false}>
         <Form.Item label={<span className="font-medium text-gray-700">Email address</span>} name="email" rules={[{ required: true, type: "email" }]}>
-          <Input prefix={<MailOutlined className="text-gray-400" />} placeholder="you@example.com" className="rounded-xl" />
+          <Input prefix={<Mail size={18} className="text-gray-400" />} placeholder="you@example.com" className="rounded-xl" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" size="large" block loading={loading} className="h-12 rounded-xl font-semibold" style={{ background: "#FF6A00", borderColor: "#FF6A00" }}>

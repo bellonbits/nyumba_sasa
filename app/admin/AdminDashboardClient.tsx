@@ -5,9 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button, Tag, Card, Empty, App, Row, Col } from "antd";
 import {
-  LeftOutlined, CheckCircleOutlined, CloseCircleOutlined, EyeOutlined,
-  HomeOutlined, TeamOutlined, ClockCircleOutlined,
-} from "@ant-design/icons";
+  ArrowLeft,
+  CheckCircle2,
+  XCircle,
+  Eye,
+  Home,
+  Users,
+  Clock,
+} from "lucide-react";
 import { formatPrice, formatDate } from "@/lib/utils";
 
 import { apiFetch } from "@/lib/api";
@@ -39,7 +44,7 @@ export default function AdminDashboardClient({ pendingListings: initial, stats }
       {/* Dark header */}
       <div className="bg-gray-900 text-white px-4 pt-4 pb-6">
         <div className="flex items-center gap-2 mb-5">
-          <Link href="/profile"><Button type="text" icon={<LeftOutlined />} className="text-gray-300 px-0" /></Link>
+          <Link href="/profile"><Button type="text" icon={<ArrowLeft className="h-5 w-5 text-gray-300" />} className="text-gray-300 px-0 flex items-center justify-center hover:bg-white/10 rounded-full h-9 w-9" /></Link>
           <div>
             <h1 className="text-xl font-bold">Admin Dashboard</h1>
             <p className="text-gray-400 text-xs">Moderate listings & manage users</p>
@@ -48,14 +53,14 @@ export default function AdminDashboardClient({ pendingListings: initial, stats }
 
         <Row gutter={10}>
           {[
-            { icon: <HomeOutlined />, label: "Listings", value: stats.totalListings, color: "#FF6A00" },
-            { icon: <TeamOutlined />, label: "Users", value: stats.totalUsers, color: "#60a5fa" },
-            { icon: <TeamOutlined />, label: "Agents", value: stats.totalAgents, color: "#4ade80" },
-            { icon: <ClockCircleOutlined />, label: "Pending", value: stats.pendingCount, color: "#fbbf24" },
+            { icon: <Home className="h-4 w-4" />, label: "Listings", value: stats.totalListings, color: "#FF6A00" },
+            { icon: <Users className="h-4 w-4" />, label: "Users", value: stats.totalUsers, color: "#60a5fa" },
+            { icon: <Users className="h-4 w-4" />, label: "Agents", value: stats.totalAgents, color: "#4ade80" },
+            { icon: <Clock className="h-4 w-4" />, label: "Pending", value: stats.pendingCount, color: "#fbbf24" },
           ].map(({ icon, label, value, color }) => (
             <Col span={6} key={label}>
-              <div className="bg-white/10 rounded-2xl p-3 text-center">
-                <div style={{ color }} className="text-base">{icon}</div>
+              <div className="bg-white/10 rounded-2xl p-3 flex flex-col items-center text-center">
+                <div style={{ color }} className="text-base flex items-center justify-center mb-1">{icon}</div>
                 <p className="text-xl font-bold text-white mt-1 leading-none">{value}</p>
                 <p className="text-[10px] text-gray-400 mt-1">{label}</p>
               </div>
@@ -74,7 +79,7 @@ export default function AdminDashboardClient({ pendingListings: initial, stats }
 
         {pending.length === 0 ? (
           <div className="bg-white rounded-2xl py-16 flex flex-col items-center">
-            <CheckCircleOutlined className="text-5xl text-green-400 mb-3" />
+            <CheckCircle2 className="h-12 w-12 text-green-400 mb-3" />
             <p className="font-semibold text-gray-700">All caught up!</p>
             <p className="text-sm text-gray-400 mt-1">No listings pending review</p>
           </div>
@@ -103,27 +108,27 @@ export default function AdminDashboardClient({ pendingListings: initial, stats }
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">{listing.description}</p>
                 </div>
 
-                <div className="flex border-t border-gray-50">
+                <div className="flex border-t border-gray-100">
                   <Link href={`/listings/${listing.id}`} className="flex-1">
                     <div className="flex items-center justify-center gap-1.5 py-3 text-sm font-medium text-gray-500 hover:bg-gray-50">
-                      <EyeOutlined /> Preview
+                      <Eye className="h-4 w-4" /> Preview
                     </div>
                   </Link>
-                  <div className="w-px bg-gray-50" />
+                  <div className="w-px bg-gray-100" />
                   <button
                     onClick={() => updateStatus(listing.id, "rejected")}
                     disabled={processing === listing.id}
                     className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-medium text-red-500 hover:bg-red-50 disabled:opacity-50 transition-colors"
                   >
-                    <CloseCircleOutlined /> Reject
+                    <XCircle className="h-4 w-4" /> Reject
                   </button>
-                  <div className="w-px bg-gray-50" />
+                  <div className="w-px bg-gray-100" />
                   <button
                     onClick={() => updateStatus(listing.id, "approved")}
                     disabled={processing === listing.id}
                     className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-medium text-green-600 hover:bg-green-50 disabled:opacity-50 transition-colors"
                   >
-                    <CheckCircleOutlined /> Approve
+                    <CheckCircle2 className="h-4 w-4" /> Approve
                   </button>
                 </div>
               </Card>

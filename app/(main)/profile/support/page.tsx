@@ -4,9 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeftOutlined, MessageOutlined, MailOutlined,
-  QuestionCircleOutlined, PlusOutlined, MinusOutlined,
-} from "@ant-design/icons";
+  ArrowLeft, MessageSquare, Mail, HelpCircle, Plus, Minus
+} from "lucide-react";
 
 const FAQS = [
   {
@@ -41,7 +40,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
       >
         <span className="text-sm font-medium text-gray-800 flex-1">{q}</span>
         <span className="text-gray-400 shrink-0">
-          {open ? <MinusOutlined /> : <PlusOutlined />}
+          {open ? <Minus size={18} /> : <Plus size={18} />}
         </span>
       </button>
       <AnimatePresence>
@@ -68,7 +67,7 @@ export default function SupportPage() {
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="bg-white px-4 flex items-center gap-3 border-b border-gray-100" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "16px" }}>
         <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-          <ArrowLeftOutlined />
+          <ArrowLeft size={18} />
         </button>
         <h1 className="text-base font-bold text-gray-900">Help &amp; Support</h1>
       </div>
@@ -84,7 +83,7 @@ export default function SupportPage() {
           <a href="mailto:support@nyumbasasa.com">
             <div className="bg-white rounded-2xl p-4 flex flex-col items-center gap-2 active:bg-gray-50 transition-colors">
               <div className="h-11 w-11 rounded-2xl bg-purple-50 flex items-center justify-center">
-                <MailOutlined className="text-[#7B2FBE] text-xl" />
+                <Mail className="text-[#7B2FBE] h-5 w-5" />
               </div>
               <p className="text-sm font-semibold text-gray-800">Email Us</p>
               <p className="text-xs text-gray-400 text-center">support@nyumbasasa.com</p>
@@ -93,7 +92,7 @@ export default function SupportPage() {
           <a href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer">
             <div className="bg-white rounded-2xl p-4 flex flex-col items-center gap-2 active:bg-gray-50 transition-colors">
               <div className="h-11 w-11 rounded-2xl bg-green-50 flex items-center justify-center">
-                <MessageOutlined className="text-green-500 text-xl" />
+                <MessageSquare className="text-green-500 h-5 w-5" />
               </div>
               <p className="text-sm font-semibold text-gray-800">WhatsApp</p>
               <p className="text-xs text-gray-400 text-center">Chat with support</p>
@@ -109,7 +108,7 @@ export default function SupportPage() {
           className="bg-white rounded-2xl overflow-hidden"
         >
           <div className="flex items-center gap-2 px-4 pt-4 pb-2">
-            <QuestionCircleOutlined className="text-[#7B2FBE]" />
+            <HelpCircle className="text-[#7B2FBE] h-5 w-5" />
             <p className="text-sm font-bold text-gray-900">Frequently Asked Questions</p>
           </div>
           {FAQS.map((faq) => (

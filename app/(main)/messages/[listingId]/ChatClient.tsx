@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Input, Avatar, App } from "antd";
-import { ArrowLeftOutlined, SendOutlined, PhoneOutlined } from "@ant-design/icons";
+import { ArrowLeft, Send, Phone } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn, formatDate, getInitials, getWhatsAppLink } from "@/lib/utils";
 
@@ -31,7 +31,7 @@ export default function ChatClient({ listing, partner, messages: initial, curren
     const channel = supabase
       .channel(`chat-${listing?.id}-${partner?.id}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: `listing_id=eq.${listing?.id}` },
-        (payload) => {
+        (payload: any) => {
           const msg = payload.new;
           if (
             (msg.sender_id === partner?.id && msg.receiver_id === currentUserId) ||
@@ -63,7 +63,7 @@ export default function ChatClient({ listing, partner, messages: initial, curren
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 shrink-0" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)" }}>
-        <Link href="/messages" className="text-gray-600 p-1 -ml-1"><ArrowLeftOutlined /></Link>
+        <Link href="/messages" className="text-gray-600 p-1 -ml-1"><ArrowLeft size={20} /></Link>
         <Avatar src={partner?.avatar_url} size={38} style={{ background: "#FF6A00", flexShrink: 0 }}>
           {getInitials(partner?.name ?? "A")}
         </Avatar>
@@ -74,7 +74,7 @@ export default function ChatClient({ listing, partner, messages: initial, curren
         {partner?.phone && (
           <a href={getWhatsAppLink(partner.phone)} target="_blank" rel="noopener noreferrer"
             className="h-9 w-9 rounded-full bg-green-50 flex items-center justify-center text-green-600">
-            <PhoneOutlined />
+            <Phone size={18} />
           </a>
         )}
       </div>
@@ -132,7 +132,7 @@ export default function ChatClient({ listing, partner, messages: initial, curren
           disabled={!text.trim() || sending}
           className="h-11 w-11 rounded-full bg-[#FF6A00] text-white flex items-center justify-center disabled:opacity-40 active:scale-90 transition-transform"
         >
-          <SendOutlined />
+          <Send size={18} />
         </button>
       </form>
     </div>

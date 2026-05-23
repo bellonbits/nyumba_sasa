@@ -3,20 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import {
-  HomeOutlined, HomeFilled,
-  HeartOutlined, HeartFilled,
-  EnvironmentOutlined, EnvironmentFilled,
-  MessageOutlined, MessageFilled,
-  UserOutlined,
-} from "@ant-design/icons";
+import { Home, Heart, Compass, MessageSquare, User } from "lucide-react";
 
 const NAV = [
-  { href: "/home",      label: "Home",      IconOff: HomeOutlined,        IconOn: HomeFilled },
-  { href: "/favorites", label: "Favorites",  IconOff: HeartOutlined,       IconOn: HeartFilled },
-  { href: "/search",    label: "Explore",    IconOff: EnvironmentOutlined, IconOn: EnvironmentFilled },
-  { href: "/messages",  label: "Messages",   IconOff: MessageOutlined,     IconOn: MessageFilled },
-  { href: "/profile",   label: "Profile",    IconOff: UserOutlined,        IconOn: UserOutlined },
+  { href: "/home",      label: "Home",      Icon: Home },
+  { href: "/favorites", label: "Favorites",  Icon: Heart },
+  { href: "/search",    label: "Explore",    Icon: Compass },
+  { href: "/messages",  label: "Messages",   Icon: MessageSquare },
+  { href: "/profile",   label: "Profile",    Icon: User },
 ];
 
 export default function BottomNav() {
@@ -28,9 +22,8 @@ export default function BottomNav() {
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <div className="flex items-center justify-around h-[62px] px-3">
-        {NAV.map(({ href, label, IconOff, IconOn }) => {
+        {NAV.map(({ href, label, Icon }) => {
           const isActive = pathname === href || (pathname.startsWith(href + "/") && href !== "/");
-          const Icon = isActive ? IconOn : IconOff;
 
           return (
             <Link key={href} href={href} className="flex flex-col items-center justify-center flex-1 h-full">
@@ -40,7 +33,7 @@ export default function BottomNav() {
                   className="flex items-center gap-1.5 bg-[#7B2FBE] text-white px-4 py-2 rounded-full"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 >
-                  <Icon style={{ fontSize: 18 }} />
+                  <Icon size={18} fill="currentColor" />
                   <motion.span
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "auto" }}
@@ -55,7 +48,7 @@ export default function BottomNav() {
                   className="flex flex-col items-center gap-0.5"
                 >
                   <div className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center">
-                    <Icon style={{ fontSize: 18, color: "#9ca3af" }} />
+                    <Icon size={18} className="text-gray-400" />
                   </div>
                 </motion.div>
               )}

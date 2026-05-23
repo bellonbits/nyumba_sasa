@@ -32,7 +32,7 @@ export function useAuth(): AuthState {
 
     loadUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_: any, session: any) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         const { data } = await supabase.from("users").select("*").eq("id", session.user.id).single();

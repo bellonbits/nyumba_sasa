@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import "@ant-design/v5-patch-for-react-19";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AntdProvider from "@/components/AntdProvider";
 import "./globals.css";

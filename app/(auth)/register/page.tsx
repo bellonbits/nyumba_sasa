@@ -5,16 +5,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { App } from "antd";
 import {
-  ArrowLeftOutlined, UserOutlined, PhoneOutlined,
-  MailOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined,
-  HomeOutlined, ShopOutlined, CheckCircleFilled,
-} from "@ant-design/icons";
+  ArrowLeft,
+  User,
+  Phone,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Home,
+  Briefcase,
+  CheckCircle2,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import type { UserRole } from "@/lib/types";
 
 const ROLES: { value: UserRole; icon: React.ReactNode; label: string; desc: string }[] = [
-  { value: "user", icon: <HomeOutlined className="text-xl" />, label: "Home Seeker", desc: "Browse and find listings" },
-  { value: "agent", icon: <ShopOutlined className="text-xl" />, label: "Agent / Landlord", desc: "List & manage properties" },
+  { value: "user", icon: <Home className="h-5 w-5" />, label: "Home Seeker", desc: "Browse and find listings" },
+  { value: "agent", icon: <Briefcase className="h-5 w-5" />, label: "Agent / Landlord", desc: "List & manage properties" },
 ];
 
 function StepDot({ active, done }: { active: boolean; done: boolean }) {
@@ -66,9 +73,9 @@ export default function RegisterPage() {
       <div className="pt-5 flex items-center justify-between mb-8">
         <button
           onClick={() => (step === 2 ? setStep(1) : router.push("/onboarding"))}
-          className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600"
+          className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
         >
-          <ArrowLeftOutlined />
+          <ArrowLeft className="h-5 w-5" />
         </button>
         <div className="flex items-center gap-1.5">
           <StepDot active={step === 1} done={step > 1} />
@@ -104,7 +111,7 @@ export default function RegisterPage() {
                 ].join(" ")}
               >
                 {role === r.value && (
-                  <CheckCircleFilled className="absolute top-3 right-3 text-[#7B2FBE] text-sm" />
+                  <CheckCircle2 className="absolute top-3 right-3 text-[#7B2FBE] h-4 w-4" />
                 )}
                 <div className={role === r.value ? "text-[#7B2FBE]" : "text-gray-400"}>{r.icon}</div>
                 <p className={`font-bold text-sm mt-2 ${role === r.value ? "text-[#7B2FBE]" : "text-gray-700"}`}>{r.label}</p>
@@ -117,7 +124,7 @@ export default function RegisterPage() {
             <div>
               <label className="text-sm font-semibold text-gray-700 block mb-1.5">Full name</label>
               <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-                <UserOutlined className="text-gray-400 text-base shrink-0" />
+                <User className="text-gray-400 h-5 w-5 shrink-0" />
                 <input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Amina Osei"
                   className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
               </div>
@@ -125,7 +132,7 @@ export default function RegisterPage() {
             <div>
               <label className="text-sm font-semibold text-gray-700 block mb-1.5">Phone number</label>
               <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-                <PhoneOutlined className="text-gray-400 text-base shrink-0" />
+                <Phone className="text-gray-400 h-5 w-5 shrink-0" />
                 <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+254 712 345 678" type="tel"
                   className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
               </div>
@@ -148,7 +155,7 @@ export default function RegisterPage() {
           <div>
             <label className="text-sm font-semibold text-gray-700 block mb-1.5">Email address</label>
             <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-              <MailOutlined className="text-gray-400 text-base shrink-0" />
+              <Mail className="text-gray-400 h-5 w-5 shrink-0" />
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required
                 className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
             </div>
@@ -156,12 +163,12 @@ export default function RegisterPage() {
           <div>
             <label className="text-sm font-semibold text-gray-700 block mb-1.5">Password</label>
             <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-              <LockOutlined className="text-gray-400 text-base shrink-0" />
+              <Lock className="text-gray-400 h-5 w-5 shrink-0" />
               <input type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
                 placeholder="Minimum 6 characters" required minLength={6}
                 className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400" />
-              <button type="button" onClick={() => setShowPw(p => !p)} className="text-gray-400 shrink-0">
-                {showPw ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+              <button type="button" onClick={() => setShowPw(p => !p)} className="text-gray-400 shrink-0 hover:text-gray-600 transition-colors">
+                {showPw ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
               </button>
             </div>
           </div>

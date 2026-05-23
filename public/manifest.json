@@ -4,7 +4,7 @@
   "description": "Africa's mobile-first housing marketplace",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
+  "background_color": "#FFE135",
   "theme_color": "#7B2FBE",
   "orientation": "portrait",
   "icons": [

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input } from "antd";
-import { SearchOutlined, ControlOutlined } from "@ant-design/icons";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
@@ -31,7 +31,7 @@ export default function SearchBar({
           onChange={(e) => setQuery(e.target.value)}
           onPressEnter={() => handleSearch(query)}
           placeholder={placeholder}
-          prefix={<SearchOutlined className="text-gray-400" />}
+          prefix={<Search size={18} className="text-gray-400" />}
           size="large"
           className="rounded-xl"
           allowClear
@@ -43,7 +43,7 @@ export default function SearchBar({
           className="h-11 w-11 rounded-xl bg-[#FF6A00] text-white flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0"
           aria-label="Filters"
         >
-          <ControlOutlined style={{ fontSize: 18 }} />
+          <SlidersHorizontal size={18} />
         </button>
       )}
     </div>

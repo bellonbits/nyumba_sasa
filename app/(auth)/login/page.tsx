@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { App } from "antd";
-import { ArrowLeftOutlined, MailOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined, SmileOutlined, MobileOutlined } from "@ant-design/icons";
+import { ArrowLeft, Mail, Lock, Eye, EyeOff, Smile, Smartphone } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -40,13 +40,13 @@ export default function LoginPage() {
       <div className="pt-5 mb-8">
         <Link href="/onboarding">
           <button className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-            <ArrowLeftOutlined />
+            <ArrowLeft size={18} />
           </button>
         </Link>
       </div>
 
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-gray-900 mb-1 flex items-center gap-2">Welcome back <SmileOutlined className="text-yellow-400" /></h1>
+        <h1 className="text-2xl font-extrabold text-gray-900 mb-1 flex items-center gap-2">Welcome back <Smile size={24} className="text-yellow-400 fill-yellow-400" /></h1>
         <p className="text-gray-400 text-sm">Sign in to your Nyumba Sasa account</p>
       </div>
 
@@ -59,7 +59,7 @@ export default function LoginPage() {
         <div>
           <label className="text-sm font-semibold text-gray-700 block mb-1.5">Email address</label>
           <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-            <MailOutlined className="text-gray-400 text-base shrink-0" />
+            <Mail className="text-gray-400 h-5 w-5 shrink-0" />
             <input
               type="email"
               value={email}
@@ -75,7 +75,7 @@ export default function LoginPage() {
         <div>
           <label className="text-sm font-semibold text-gray-700 block mb-1.5">Password</label>
           <div className="flex items-center gap-3 bg-[#F0EEF8] rounded-2xl px-4 h-14">
-            <LockOutlined className="text-gray-400 text-base shrink-0" />
+            <Lock className="text-gray-400 h-5 w-5 shrink-0" />
             <input
               type={showPw ? "text" : "password"}
               value={password}
@@ -85,7 +85,7 @@ export default function LoginPage() {
               className="flex-1 bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
             />
             <button type="button" onClick={() => setShowPw(p => !p)} className="text-gray-400 shrink-0">
-              {showPw ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+              {showPw ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function LoginPage() {
       </div>
 
       <button className="w-full h-14 bg-[#F0EEF8] text-[#7B2FBE] text-sm font-bold rounded-full flex items-center justify-center gap-2">
-        <MobileOutlined className="text-base" /> Continue with Phone Number
+        <Smartphone className="h-5 w-5" /> Continue with Phone Number
       </button>
 
       <p className="text-center text-gray-400 text-sm mt-8">

@@ -5,9 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button, Tag, Statistic, Row, Col, Card, App, Empty } from "antd";
 import {
-  PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined,
-  LeftOutlined, HomeOutlined, ClockCircleOutlined, CheckCircleOutlined, CloseCircleOutlined,
-} from "@ant-design/icons";
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  ArrowLeft,
+  Home,
+  Clock,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 import { formatPrice, formatDate } from "@/lib/utils";
 import type { Listing } from "@/lib/types";
 
@@ -51,7 +58,7 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
       <div className="bg-white px-4 pt-4 pb-5 border-b border-gray-100">
         <div className="flex items-center gap-2 mb-5">
           <Link href="/profile">
-            <Button type="text" icon={<LeftOutlined />} className="px-0 text-gray-600" />
+            <Button type="text" icon={<ArrowLeft className="h-5 w-5" />} className="px-0 text-gray-600 flex items-center justify-center hover:bg-gray-100 rounded-full h-9 w-9" />
           </Link>
           <div>
             <h1 className="text-xl font-bold text-gray-900">My Listings</h1>
@@ -62,16 +69,16 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
         {/* Stats */}
         <Row gutter={8}>
           {[
-            { icon: <HomeOutlined />, label: "Total", value: stats.total, color: "#1a1a1a" },
-            { icon: <CheckCircleOutlined />, label: "Live", value: stats.approved, color: "#52c41a" },
-            { icon: <ClockCircleOutlined />, label: "Pending", value: stats.pending, color: "#fa8c16" },
-            { icon: <CloseCircleOutlined />, label: "Rejected", value: stats.rejected, color: "#ff4d4f" },
+            { icon: <Home className="h-4 w-4" />, label: "Total", value: stats.total, color: "#1a1a1a" },
+            { icon: <CheckCircle2 className="h-4 w-4" />, label: "Live", value: stats.approved, color: "#52c41a" },
+            { icon: <Clock className="h-4 w-4" />, label: "Pending", value: stats.pending, color: "#fa8c16" },
+            { icon: <XCircle className="h-4 w-4" />, label: "Rejected", value: stats.rejected, color: "#ff4d4f" },
           ].map(({ icon, label, value, color }) => (
             <Col span={6} key={label}>
-              <div className="bg-gray-50 rounded-2xl p-3 text-center">
-                <div style={{ color }} className="text-base mb-1">{icon}</div>
-                <p className="text-lg font-bold text-gray-900 leading-none">{value}</p>
-                <p className="text-[10px] text-gray-400 mt-0.5">{label}</p>
+              <div className="bg-gray-50 rounded-2xl p-3 flex flex-col items-center text-center">
+                <div style={{ color }} className="text-base mb-1 flex items-center justify-center">{icon}</div>
+                <p className="text-lg font-bold text-gray-900 leading-none mt-1">{value}</p>
+                <p className="text-[10px] text-gray-400 mt-1">{label}</p>
               </div>
             </Col>
           ))}
@@ -80,7 +87,7 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
 
       <div className="px-4 py-4">
         <Link href="/agent/new">
-          <Button type="primary" size="large" icon={<PlusOutlined />} block className="h-12 rounded-2xl font-semibold mb-5" style={{ background: "#FF6A00", borderColor: "#FF6A00" }}>
+          <Button type="primary" size="large" icon={<Plus className="h-5 w-5" />} block className="h-12 rounded-2xl font-semibold mb-5 flex items-center justify-center gap-1.5" style={{ background: "#FF6A00", borderColor: "#FF6A00" }}>
             Add New Listing
           </Button>
         </Link>
@@ -108,10 +115,10 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
                 </div>
 
                 {/* Actions */}
-                <div className="flex border-t border-gray-50">
+                <div className="flex border-t border-gray-100">
                   {[
-                    { icon: <EyeOutlined />, label: "View", href: `/listings/${listing.id}`, color: "text-gray-500" },
-                    { icon: <EditOutlined />, label: "Edit", href: `/agent/edit/${listing.id}`, color: "text-[#FF6A00]" },
+                    { icon: <Eye className="h-4 w-4" />, label: "View", href: `/listings/${listing.id}`, color: "text-gray-500" },
+                    { icon: <Edit className="h-4 w-4" />, label: "Edit", href: `/agent/edit/${listing.id}`, color: "text-[#FF6A00]" },
                   ].map(({ icon, label, href, color }) => (
                     <Link key={label} href={href} className="flex-1">
                       <div className={`flex items-center justify-center gap-1.5 py-3 text-xs font-medium ${color} hover:bg-gray-50 transition-colors`}>
@@ -119,12 +126,12 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
                       </div>
                     </Link>
                   ))}
-                  <div className="w-px bg-gray-50" />
+                  <div className="w-px bg-gray-100" />
                   <button
                     onClick={() => confirmDelete(listing.id, listing.title)}
                     className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium text-red-400 hover:bg-red-50 transition-colors"
                   >
-                    <DeleteOutlined /> Delete
+                    <Trash2 className="h-4 w-4" /> Delete
                   </button>
                 </div>
               </Card>

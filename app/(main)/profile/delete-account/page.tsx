@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { App } from "antd";
 import {
-  ArrowLeftOutlined, WarningOutlined, DeleteOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
+  ArrowLeft,
+  AlertTriangle,
+  Trash2,
+  CheckCircle2,
+} from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const CONSEQUENCES = [
@@ -60,8 +62,8 @@ export default function DeleteAccountPage() {
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="bg-white px-4 flex items-center gap-3 border-b border-gray-100" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "16px" }}>
         {step < 3 && (
-          <button onClick={() => (step === 2 ? setStep(1) : router.back())} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-            <ArrowLeftOutlined />
+          <button onClick={() => (step === 2 ? setStep(1) : router.back())} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+            <ArrowLeft className="h-5 w-5" />
           </button>
         )}
         <h1 className="text-base font-bold text-gray-900">Delete Account</h1>
@@ -80,8 +82,8 @@ export default function DeleteAccountPage() {
             className="px-4 pt-6 pb-10"
           >
             <div className="flex flex-col items-center text-center mb-6">
-              <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center mb-3">
-                <WarningOutlined className="text-red-500 text-3xl" />
+              <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center mb-3 animate-pulse">
+                <AlertTriangle className="text-red-500 h-8 w-8" />
               </div>
               <h2 className="text-lg font-bold text-gray-900">Before you go…</h2>
               <p className="text-sm text-gray-400 mt-1">Deleting your account is permanent and cannot be undone.</p>
@@ -93,7 +95,7 @@ export default function DeleteAccountPage() {
                 {CONSEQUENCES.map((c) => (
                   <div key={c} className="flex items-start gap-2.5">
                     <div className="h-5 w-5 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
-                      <DeleteOutlined className="text-red-400 text-[10px]" />
+                      <Trash2 className="text-red-400 h-3 w-3" />
                     </div>
                     <p className="text-sm text-gray-600">{c}</p>
                   </div>
@@ -178,7 +180,7 @@ export default function DeleteAccountPage() {
             className="flex flex-col items-center justify-center min-h-[70vh] px-8 text-center"
           >
             <div className="h-20 w-20 rounded-full bg-green-50 flex items-center justify-center mb-4">
-              <CheckCircleOutlined className="text-green-500 text-4xl" />
+              <CheckCircle2 className="text-green-500 h-10 w-10" />
             </div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">Account deleted</h2>
             <p className="text-sm text-gray-400">Your data has been permanently removed. We hope to see you again someday.</p>

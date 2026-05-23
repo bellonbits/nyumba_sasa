@@ -5,24 +5,24 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Switch } from "antd";
 import {
-  ArrowLeftOutlined, BellOutlined, MessageOutlined,
-  HeartOutlined, HomeOutlined, TagOutlined, SoundOutlined,
-} from "@ant-design/icons";
+  ArrowLeft, Bell, MessageSquare,
+  Heart, Home, Tag, Megaphone,
+} from "lucide-react";
 
 const SECTIONS = [
   {
     title: "Activity",
     items: [
-      { icon: MessageOutlined, label: "New messages", desc: "When someone replies to your inquiry", key: "messages" },
-      { icon: HeartOutlined, label: "Saved home updates", desc: "Price changes on your saved listings", key: "favorites" },
-      { icon: HomeOutlined, label: "New listings nearby", desc: "Properties matching your search", key: "nearby" },
+      { icon: MessageSquare, label: "New messages", desc: "When someone replies to your inquiry", key: "messages" },
+      { icon: Heart, label: "Saved home updates", desc: "Price changes on your saved listings", key: "favorites" },
+      { icon: Home, label: "New listings nearby", desc: "Properties matching your search", key: "nearby" },
     ],
   },
   {
     title: "Promotions",
     items: [
-      { icon: TagOutlined, label: "Deals & offers", desc: "Special pricing from verified agents", key: "deals" },
-      { icon: SoundOutlined, label: "News & updates", desc: "Platform announcements", key: "news" },
+      { icon: Tag, label: "Deals & offers", desc: "Special pricing from verified agents", key: "deals" },
+      { icon: Megaphone, label: "News & updates", desc: "Platform announcements", key: "news" },
     ],
   },
 ];
@@ -37,8 +37,8 @@ export default function NotificationsPage() {
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       {/* Header */}
       <div className="bg-white px-4 flex items-center gap-3 border-b border-gray-100" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "16px" }}>
-        <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-          <ArrowLeftOutlined />
+        <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+          <ArrowLeft className="h-5 w-5" />
         </button>
         <h1 className="text-base font-bold text-gray-900">Notifications</h1>
       </div>
@@ -53,7 +53,7 @@ export default function NotificationsPage() {
         >
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-xl bg-purple-50 flex items-center justify-center">
-              <BellOutlined className="text-[#7B2FBE] text-lg" />
+              <Bell className="text-[#7B2FBE] h-5 w-5" />
             </div>
             <div>
               <p className="text-sm font-semibold text-gray-900">Push Notifications</p>
@@ -78,10 +78,10 @@ export default function NotificationsPage() {
             {section.items.map(({ icon: Icon, label, desc, key }, i) => (
               <div
                 key={key}
-                className={`flex items-center gap-3 px-4 py-3.5 ${i > 0 ? "border-t border-gray-50" : ""}`}
+                className={`flex items-center gap-3 px-4 py-3.5 ${i > 0 ? "border-t border-gray-100" : ""}`}
               >
-                <div className="h-8 w-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
-                  <Icon />
+                <div className="h-8 w-8 rounded-xl bg-gray-50 flex items-center justify-center text-gray-500 shrink-0">
+                  <Icon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-800">{label}</p>

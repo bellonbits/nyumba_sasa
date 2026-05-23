@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn, optimizeCloudinaryUrl } from "@/lib/utils";
 
 interface ImageCarouselProps {
@@ -47,13 +47,13 @@ export default function ImageCarousel({ images, title, className }: ImageCarouse
             onClick={() => setCurrent((c) => (c === 0 ? images.length - 1 : c - 1))}
             className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center active:scale-90 transition-transform"
           >
-            <LeftOutlined />
+            <ChevronLeft size={20} />
           </button>
           <button
             onClick={() => setCurrent((c) => (c === images.length - 1 ? 0 : c + 1))}
             className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center active:scale-90 transition-transform"
           >
-            <RightOutlined />
+            <ChevronRight size={20} />
           </button>
         </>
       )}

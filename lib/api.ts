@@ -4,10 +4,10 @@
  */
 import { createClient } from "@/lib/supabase/client";
 
-const FASTAPI_URL = "https://nyumbasasa-fastapi.b4a.app"; // Old standalone deployment
-const NEXT_API_URL = "https://nyumba-sasa.vercel.app"; // Current Vercel deployment
+const FASTAPI_URL = process.env.NEXT_PUBLIC_FASTAPI_URL || "http://localhost:8000";
+const NEXT_API_URL = process.env.NEXT_PUBLIC_API_URL || FASTAPI_URL;
 
-// Switch back to Vercel URL because FastAPI is now hosted within Vercel Serverless!
+// Dynamic API routing based on environment configuration (e.g. Docker/Podman local ports)
 const API_BASE_URL = NEXT_API_URL;
 
 export async function apiFetch(path: string, options: RequestInit = {}) {

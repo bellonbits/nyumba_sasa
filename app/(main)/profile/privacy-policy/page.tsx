@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeftOutlined, SafetyOutlined } from "@ant-design/icons";
+import { ArrowLeft, Shield } from "lucide-react";
 
 const SECTIONS = [
   {
@@ -49,8 +49,8 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="bg-white px-4 flex items-center gap-3 border-b border-gray-100" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 16px)", paddingBottom: "16px" }}>
-        <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-          <ArrowLeftOutlined />
+        <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors">
+          <ArrowLeft className="h-5 w-5" />
         </button>
         <h1 className="text-base font-bold text-gray-900">Privacy Policy</h1>
       </div>
@@ -63,7 +63,7 @@ export default function PrivacyPolicyPage() {
           transition={{ duration: 0.35 }}
           className="bg-gradient-to-r from-[#7B2FBE] to-[#9B4FDE] rounded-2xl p-5 flex items-center gap-4 mb-4"
         >
-          <SafetyOutlined className="text-white text-3xl shrink-0" />
+          <Shield className="text-white h-8 w-8 shrink-0" />
           <div>
             <p className="text-white font-bold text-sm">Your privacy matters</p>
             <p className="text-white/70 text-xs mt-0.5">Effective date: 1 January 2025</p>

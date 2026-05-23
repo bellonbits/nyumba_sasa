@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Empty } from "antd";
-import { HeartOutlined } from "@ant-design/icons";
+import { Heart } from "lucide-react";
 import PropertyCard from "@/components/PropertyCard";
 import { createClient } from "@/lib/supabase/client";
 import type { Favorite } from "@/lib/types";
@@ -28,7 +28,7 @@ export default function FavoritesClient({ favorites: initial, userId }: { favori
       {favorites.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="h-16 w-16 rounded-full bg-orange-50 flex items-center justify-center mb-4">
-            <HeartOutlined className="text-[#FF6A00] text-2xl" />
+            <Heart className="text-[#FF6A00] h-6 w-6" />
           </div>
           <p className="font-semibold text-gray-700 text-base">No saved homes yet</p>
           <p className="text-sm text-gray-400 mt-1 text-center">

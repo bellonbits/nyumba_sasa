@@ -1,6 +1,6 @@
 import asyncio
 from sqlalchemy import inspect
-from backend.app.db.session import engine
+from app.db.session import engine
 
 async def inspect_db():
     def get_columns(conn):

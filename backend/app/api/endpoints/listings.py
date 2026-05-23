@@ -92,24 +92,80 @@ async def create_listing(
 ):
     user_id = user_data["sub"]
     
-    # Check if user is agent or admin
+    # Check if user is landlord, agent, or admin
     user_query = select(User).where(User.id == user_id)
     user_profile = (await db.execute(user_query)).scalar_one_or_none()
     
-    if not user_profile or user_profile.role not in ["agent", "admin"]:
-        return APIResponse(data=None, error="Only agents can create listings")
+    if not user_profile or user_profile.role not in ["agent", "admin", "landlord", "user"]:
+        return APIResponse(data=None, error="Only landlords, agents, and admins can create listings")
+
+    # ---- Anti-Fake AI Moderation & High-Quality Listing System ----
+    scam_keywords = ["deposit first", "send money", "western union", "no viewing", "no physical viewing", "wire deposit"]
+    desc_lower = payload.description.lower()
+    is_scam_flagged = any(kw in desc_lower for kw in scam_keywords)
+    
+    # Suspicious pricing: e.g. listing under 3,000 KES
+    is_suspicious_price = payload.price < 3000
+    
+    # Check duplicate image urls
+    is_duplicate_images = False
+    if payload.images:
+        for img in payload.images:
+            # Simple check if image exists in other listings
+            img_query = select(Listing).where(Listing.images.like(f"%{img}%"))
+            existing_with_img = (await db.execute(img_query)).scalars().first()
+            if existing_with_img:
+                is_duplicate_images = True
+                break
+
+    # Determine Quality and Moderation Status
+    # Minimum: 5 images, GPS pin, realistic pricing, complete description (min 50 chars)
+    is_high_quality = (
+        len(payload.images) >= 5 and 
+        payload.gps_lat is not None and 
+        payload.gps_lng is not None and 
+        len(payload.description) >= 50 and 
+        (5000 <= payload.price <= 5000000)
+    )
+
+    status = ListingStatus.approved
+    property_verified = False
+    owner_verified = False
+    moderation_note = ""
+
+    if is_scam_flagged or is_duplicate_images or is_suspicious_price:
+        status = ListingStatus.rejected
+        moderation_note = "Auto-rejected by AI Moderation Layer: duplicate images or scam keywords detected."
+    elif is_high_quality:
+        status = ListingStatus.approved
+        property_verified = True
+        owner_verified = user_profile.identity_verified
+        moderation_note = "Auto-approved: meets all high-quality validation rules."
+    else:
+        status = ListingStatus.pending
+        property_verified = False
+        moderation_note = "Placed in moderation queue: low-effort or incomplete listing criteria."
+
+    import datetime
+    last_confirmed = datetime.datetime.utcnow()
+    # Expire in 30 days
+    expire_at = last_confirmed + datetime.timedelta(days=30)
 
     new_listing = Listing(
         **payload.model_dump(),
         agent_id=user_id,
-        status=ListingStatus.pending
+        status=status,
+        property_verified=property_verified,
+        owner_verified=owner_verified,
+        last_confirmed_available=last_confirmed,
+        auto_expire_at=expire_at
     )
     
     db.add(new_listing)
     await db.commit()
     await db.refresh(new_listing)
     
-    return APIResponse(data=new_listing)
+    return APIResponse(data=new_listing, message=moderation_note)
 
 @router.patch("/{id}", response_model=APIResponse)
 async def update_listing(
@@ -195,3 +251,30 @@ async def update_listing_status(
     await db.refresh(listing)
     
     return APIResponse(data=listing)
+
+@router.post("/{id}/confirm", response_model=APIResponse)
+async def confirm_listing_availability(
+    id: str,
+    user_data: dict = Depends(verify_supabase_jwt),
+    db: AsyncSession = Depends(get_session)
+):
+    user_id = user_data["sub"]
+    query = select(Listing).where(Listing.id == id)
+    listing = (await db.execute(query)).scalar_one_or_none()
+    
+    if not listing:
+        return APIResponse(data=None, error="Listing not found")
+        
+    if listing.agent_id != user_id:
+        return APIResponse(data=None, error="Unauthorized")
+        
+    import datetime
+    listing.last_confirmed_available = datetime.datetime.utcnow()
+    listing.auto_expire_at = listing.last_confirmed_available + datetime.timedelta(days=30)
+    
+    db.add(listing)
+    await db.commit()
+    await db.refresh(listing)
+    
+    return APIResponse(data=listing, message="Listing availability successfully confirmed!")
+

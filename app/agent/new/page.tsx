@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Form, Input, Button, Upload, Select, InputNumber, App, Row, Col } from "antd";
-import { ArrowLeftOutlined, PlusOutlined, LoadingOutlined, HomeOutlined, KeyOutlined } from "@ant-design/icons";
+import { ArrowLeft, Plus, Loader2, Home, Key } from "lucide-react";
 import type { UploadFile } from "antd";
 
 import { apiFetch } from "@/lib/api";
@@ -59,7 +59,7 @@ export default function NewListingPage() {
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="bg-white px-4 py-4 border-b border-gray-100 flex items-center gap-3">
-        <Link href="/agent"><Button type="text" icon={<ArrowLeftOutlined />} className="px-0 text-gray-700" /></Link>
+        <Link href="/agent"><Button type="text" icon={<ArrowLeft className="h-5 w-5 text-gray-700" />} className="px-0 text-gray-700 flex items-center" /></Link>
         <h1 className="text-lg font-bold text-gray-900">New Listing</h1>
       </div>
 
@@ -80,7 +80,7 @@ export default function NewListingPage() {
               ))}
               <Upload accept="image/*" showUploadList={false} beforeUpload={handleImageUpload} multiple>
                 <div className="h-20 w-20 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-[#FF6A00] transition-colors">
-                  {uploadingCount > 0 ? <LoadingOutlined className="text-[#FF6A00]" /> : <PlusOutlined className="text-gray-400" />}
+                  {uploadingCount > 0 ? <Loader2 className="h-5 w-5 text-[#FF6A00] animate-spin" /> : <Plus className="h-5 w-5 text-gray-400" />}
                   <span className="text-[10px] text-gray-400 mt-1">Add photo</span>
                 </div>
               </Upload>
@@ -90,8 +90,8 @@ export default function NewListingPage() {
           {/* Type */}
           <Form.Item label={<span className="font-semibold text-gray-700">Listing Type</span>} name="listing_type" initialValue="rent" rules={[{ required: true }]}>
             <Select size="large" className="w-full" options={[
-              { value: "rent", label: <span className="flex items-center gap-1.5"><HomeOutlined />For Rent</span> },
-              { value: "buy", label: <span className="flex items-center gap-1.5"><KeyOutlined />For Sale</span> },
+              { value: "rent", label: <span className="flex items-center gap-1.5"><Home className="h-4 w-4 text-gray-500" />For Rent</span> },
+              { value: "buy", label: <span className="flex items-center gap-1.5"><Key className="h-4 w-4 text-gray-500" />For Sale</span> },
             ]} />
           </Form.Item>
 
