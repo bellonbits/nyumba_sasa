@@ -15,6 +15,8 @@ async def on_startup():
     from app.db.session import engine
     from app.models.base import User, Listing, Favorite, Message, VisitConfirmation, Notification # Import to register models
     import sqlalchemy as sa
+    db_host = settings.DATABASE_URL.split("@")[-1] if "@" in settings.DATABASE_URL else settings.DATABASE_URL
+    print(f"Connecting to database: {db_host}")
     async with engine.begin() as conn:
         try:
             # Dynamically inject missing columns to active PostgreSQL tables in Podman
