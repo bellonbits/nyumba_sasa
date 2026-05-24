@@ -5,13 +5,13 @@
 import { createClient } from "@/lib/supabase/client";
 
 const getApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
-  // On web browser deployments (e.g. Vercel), use relative paths to route through Vercel's proxy rewrite,
-  // bypassing the "Mixed Content" block entirely. On mobile (Capacitor) or Server, use the absolute URL.
+  // On web browser deployments (e.g. Vercel), we MUST use relative paths to route through
+  // Vercel's proxy rewrite. This completely bypasses the browser's "Mixed Content" block under HTTPS.
   if (typeof window !== "undefined" && !(window as any).Capacitor) {
     return ""; 
+  }
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
   }
   return process.env.NEXT_PUBLIC_FASTAPI_URL || "http://api.guri24.com:8000";
 };

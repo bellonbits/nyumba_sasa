@@ -1,11 +1,11 @@
 "use client";
 
 const getApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
   if (typeof window !== "undefined" && !(window as any).Capacitor) {
     return ""; 
+  }
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
   }
   return "http://api.guri24.com:8000";
 };
