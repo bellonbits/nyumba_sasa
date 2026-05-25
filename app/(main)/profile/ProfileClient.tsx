@@ -124,7 +124,6 @@ export default function ProfileClient({ profile, email, favCount, listingCount }
   }
 
   return (
-  return (
     <div className="min-h-screen bg-[#F5F5F8] pt-12 md:pt-4">
       <div className="max-w-6xl mx-auto w-full pb-24 px-4 sm:px-6">
         
