@@ -99,7 +99,7 @@ export default function HomeClient({ userName, userAvatar, listings, favoriteIds
 
   return (
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
-      <div className="px-4 sm:px-6 md:px-2 pt-6 md:pt-2 pb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-6 md:pt-8 safe-bottom">
 
         {/* Top Bar */}
         <motion.div

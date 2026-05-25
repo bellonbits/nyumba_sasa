@@ -51,7 +51,7 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       {/* Header */}
-      <div className="bg-[#F5F5F8] px-5 pt-12 pb-4 md:pt-4 md:pb-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 pt-12 pb-4 md:pt-8 md:pb-2">
         <div className="flex items-center justify-between mb-4 md:hidden">
           <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-white shadow-sm flex items-center justify-center">
             <ArrowLeft className="text-gray-600 h-5 w-5" />
@@ -62,8 +62,16 @@ export default function SearchPage() {
           </button>
         </div>
 
+        {/* Desktop page title */}
+        <div className="hidden md:flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-extrabold text-gray-900 leading-none">Explore Properties</h1>
+            <p className="text-gray-400 text-sm mt-1">Search, filter and find your perfect home</p>
+          </div>
+        </div>
+
         {/* Search input */}
-        <div className="flex items-center gap-2 bg-white rounded-full px-4 h-12 shadow-sm border border-gray-100 mb-4 max-w-2xl">
+        <div className="flex items-center gap-2 bg-white rounded-full px-4 h-12 shadow-sm border border-gray-100 mb-4">
           <Search className="w-4 h-4 text-gray-400 shrink-0" />
           <input
             value={query}
@@ -75,7 +83,7 @@ export default function SearchPage() {
       </div>
 
       {/* Main Grid View */}
-      <div className="px-5 flex flex-col md:flex-row gap-8 pb-24 animate-fade-in">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col md:flex-row gap-8 safe-bottom animate-fade-in">
         {/* Left Column: Desktop Sticky Filter Sidebar */}
         <aside className="hidden md:block w-72 shrink-0 bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-fit sticky top-20">
           <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-5">

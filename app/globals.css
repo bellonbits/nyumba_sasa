@@ -32,6 +32,7 @@
 }
 
 @layer utilities {
+  /* Mobile: adds bottom padding to clear the fixed bottom nav + safe area */
   .safe-bottom {
     padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
@@ -49,5 +50,7 @@
   @media (min-width: 768px) {
     .pb-safe { padding-bottom: 0; }
     .pt-safe { padding-top: 0; }
+    /* On desktop there's no bottom nav, reset safe-bottom */
+    .safe-bottom { padding-bottom: 1.5rem; }
   }
 }

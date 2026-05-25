@@ -210,7 +210,7 @@ export default function ListingDetailClient({ listing: l, whatsappUrl, amenityIc
 
   return (
     <div className="min-h-screen bg-[#F5F5F8]">
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6" style={{ paddingBottom: "calc(96px + env(safe-area-inset-bottom, 0px))" }}>
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 safe-bottom">
       
         {/* Breadcrumbs for desktop */}
         <div className="hidden lg:flex items-center gap-2 mb-4">

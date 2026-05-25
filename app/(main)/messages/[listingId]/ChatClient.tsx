@@ -76,8 +76,8 @@ export default function ChatClient({ listing, partner, messages: initial, curren
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] bg-[#F5F5F8]">
-      <div className="flex-1 flex max-w-6xl mx-auto w-full bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden relative">
+    <div className="flex flex-col h-[calc(100svh-8rem)] md:h-[calc(100svh-4rem)] bg-[#F5F5F8]">
+      <div className="flex-1 flex max-w-6xl mx-auto w-full bg-white shadow-sm border border-gray-100 md:rounded-3xl md:overflow-hidden md:my-4 relative overflow-hidden">
         
         {/* LEFT COLUMN: Conversation List (Desktop Only) */}
         <div className="hidden md:flex flex-col w-80 shrink-0 border-r border-gray-100 bg-white h-full overflow-hidden">
