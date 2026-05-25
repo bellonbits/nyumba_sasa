@@ -17,7 +17,7 @@ export default function FavoritesClient({ favorites: initial, userId }: { favori
   }
 
   return (
-    <div className="px-4 min-h-screen" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 48px)" }}>
+    <div className="px-4 min-h-screen pt-16 md:pt-4">
       <div className="mb-5">
         <h1 className="text-2xl font-bold text-gray-900">Saved Homes</h1>
         <p className="text-gray-400 text-sm mt-0.5">
@@ -36,7 +36,7 @@ export default function FavoritesClient({ favorites: initial, userId }: { favori
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-6">
           {favorites.map((fav) =>
             fav.listing ? (
               <PropertyCard

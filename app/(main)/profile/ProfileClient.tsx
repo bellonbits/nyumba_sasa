@@ -124,190 +124,190 @@ export default function ProfileClient({ profile, email, favCount, listingCount }
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
-      <div className="max-w-3xl mx-auto w-full pb-24">
-      
-      {/* Header card */}
-      <div className="bg-white px-4 pt-12 pb-6">
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <Avatar src={profile?.avatar_url} size={64} style={{ background: "#FF6A00", fontSize: 22 }}>
-              {getInitials(profile?.name ?? "U")}
-            </Avatar>
-            {profile?.identity_verified && (
-              <div className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-0.5 shadow">
-                <BadgeCheck className="h-3.5 w-3.5 text-white" />
+  return (
+    <div className="min-h-screen bg-[#F5F5F8] pt-12 md:pt-4">
+      <div className="max-w-6xl mx-auto w-full pb-24 px-4 sm:px-6">
+        
+        {/* Page Title */}
+        <div className="mb-6 hidden md:block">
+          <h1 className="text-2xl font-black text-gray-900 leading-none">Account Suite</h1>
+          <p className="text-gray-400 text-xs mt-1">Manage your credentials, reputation badges, and preference parameters</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          
+          {/* LEFT COLUMN: Profile Header & Reputation Stats (1/3 width) */}
+          <div className="md:col-span-1 space-y-6">
+            
+            {/* Main Profile Info Card */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <div className="flex flex-col items-center text-center space-y-3">
+                <div className="relative">
+                  <Avatar src={profile?.avatar_url} size={80} style={{ background: "#7B2FBE", fontSize: 28 }}>
+                    {getInitials(profile?.name ?? "U")}
+                  </Avatar>
+                  {profile?.identity_verified && (
+                    <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 shadow border border-white">
+                      <BadgeCheck className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="flex items-center justify-center gap-1.5">
+                    <h2 className="text-lg font-extrabold text-gray-900 leading-none">{profile?.name ?? "User"}</h2>
+                    {profile?.email_verified && <CheckCircle2 className="h-4 w-4 text-green-500" />}
+                  </div>
+                  <p className="text-gray-400 text-xs truncate max-w-[200px]">{email}</p>
+                </div>
+                
+                <Tag color={ROLE_COLORS[profile?.role ?? "user"] ?? "blue"} className="rounded-full text-xs font-bold px-3 py-0.5 border-none">
+                  {ROLE_LABELS[profile?.role ?? "user"] ?? "User"}
+                </Tag>
+                
+                <Link href="/profile/edit" className="w-full pt-2">
+                  <button className="w-full py-2.5 rounded-full bg-gray-50 border border-gray-150 text-gray-700 font-bold text-xs hover:bg-gray-100 transition-colors">
+                    Edit Profile Credentials
+                  </button>
+                </Link>
+              </div>
+
+              {/* Saved homes counts */}
+              <div className="grid grid-cols-2 gap-3 mt-6 pt-5 border-t border-gray-100">
+                <div className="bg-purple-50/50 rounded-2xl p-3 flex flex-col items-center text-center">
+                  <Heart className="text-[#7B2FBE] h-4.5 w-4.5 mb-1" />
+                  <p className="text-xl font-black text-gray-900 leading-none mb-1">{favCount}</p>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Saved</p>
+                </div>
+                <div className="bg-gray-50 rounded-2xl p-3 flex flex-col items-center text-center">
+                  <Home className="text-gray-500 h-4.5 w-4.5 mb-1" />
+                  <p className="text-xl font-black text-gray-900 leading-none mb-1">{listingCount}</p>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                    {profile?.role === "user" || profile?.role === "tenant" ? "Viewed" : "Listings"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard Dash Links (Agents / Landlords / Admins) */}
+            {(profile?.role === "agent" || profile?.role === "landlord") && (
+              <Link href="/agent">
+                <div className="bg-[#7B2FBE] hover:bg-[#8e3ee6] transition-colors text-white rounded-3xl p-5 flex items-center justify-between shadow-sm cursor-pointer border border-[#7B2FBE]">
+                  <div className="flex items-center gap-3">
+                    <Home className="h-5 w-5" />
+                    <div>
+                      <p className="font-bold text-sm">Agent Dashboard</p>
+                      <p className="text-white/70 text-xs">Manage active listings</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5" />
+                </div>
+              </Link>
+            )}
+
+            {profile?.role === "admin" && (
+              <Link href="/admin">
+                <div className="bg-gray-900 hover:bg-black transition-colors text-white rounded-3xl p-5 flex items-center justify-between shadow-sm cursor-pointer border border-gray-900">
+                  <div className="flex items-center gap-3">
+                    <LayoutDashboard className="h-5 w-5" />
+                    <div>
+                      <p className="font-bold text-sm">Admin Panel</p>
+                      <p className="text-white/70 text-xs">Moderate transactions</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5" />
+                </div>
+              </Link>
+            )}
+
+            {/* Reputation metrics inside left column */}
+            {isLandlordOrAgent && (
+              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Reputation Indicators</p>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="flex items-center gap-1.5 text-gray-600 font-semibold"><Clock className="h-3.5 w-3.5 text-blue-500" /> Response rate</span>
+                      <span className="font-extrabold text-gray-900">{Math.round(responseRate)}%</span>
+                    </div>
+                    <Progress percent={responseRate} showInfo={false} strokeColor="#7B2FBE" trailColor="#F0EEF8" size="small" />
+                  </div>
+                  <div className="flex items-center justify-between pt-1 text-xs">
+                    <span className="flex items-center gap-1.5 text-xs text-gray-600 font-semibold">
+                      <TrendingUp className="h-3.5 w-3.5 text-green-500" /> Vetted Matches
+                    </span>
+                    <span className="font-extrabold text-green-600">{successfulRentals}</span>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-gray-900 truncate">{profile?.name ?? "User"}</h1>
-              {profile?.email_verified && (
-                <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+
+          {/* RIGHT COLUMN: Trust Score & Verification + Settings Menus (2/3 width) */}
+          <div className="md:col-span-2 space-y-6">
+            
+            {/* Trust Panel Card */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Platform Trust Standing</p>
+              <div className="flex items-center gap-5 pb-5 border-b border-gray-50">
+                <TrustScoreRing score={trustScore} />
+                <div className="space-y-1">
+                  <p className="text-sm font-extrabold text-gray-900 leading-none">
+                    {trustScore >= 80 ? "Trusted Member Badged" : trustScore >= 60 ? "Building Active Trust" : "New Renter Member"}
+                  </p>
+                  <p className="text-gray-400 text-xs leading-normal">
+                    {trustScore >= 80
+                      ? "Your account carries high physical audit reliability — priority booking slots active."
+                      : "Complete all verification procedures to earn the Nyumba Sasa physical badge."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mt-5">
+                <VerificationBadge verified={!!profile?.email_verified} label="Email Address Cleared" icon={Mail} />
+                <VerificationBadge verified={!!profile?.identity_verified} label="Physical Identity Registered" icon={Fingerprint} />
+              </div>
+
+              {(!profile?.email_verified || !profile?.identity_verified) && (
+                <Link href="/profile/verify">
+                  <div className="mt-4 flex items-center gap-2 px-4 py-3 rounded-2xl bg-amber-50 border border-amber-100/60 cursor-pointer hover:bg-amber-100/30 transition-colors">
+                    <AlertTriangle className="h-4.5 w-4.5 text-amber-500 shrink-0" />
+                    <p className="text-xs text-amber-700 font-bold flex-1">
+                      Complete remaining audit steps to activate verification badge
+                    </p>
+                    <ChevronRight className="h-4 w-4 text-amber-400" />
+                  </div>
+                </Link>
               )}
             </div>
-            <p className="text-gray-400 text-sm truncate">{email}</p>
-            <Tag color={ROLE_COLORS[profile?.role ?? "user"] ?? "blue"} className="mt-1 rounded-full text-xs">
-              {ROLE_LABELS[profile?.role ?? "user"] ?? "User"}
-            </Tag>
-          </div>
-          <Link href="/profile/edit">
-            <button className="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-              <Edit className="h-4 w-4" />
+
+            {/* Menu Options List */}
+            <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+              {MENU.map(({ icon: Icon, label, href }, i) => (
+                <Link key={label} href={href}>
+                  <div className={`flex items-center gap-3.5 px-5 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors ${i > 0 ? "border-t border-gray-100" : ""}`}>
+                    <div className="h-8.5 w-8.5 rounded-xl bg-gray-50 flex items-center justify-center text-gray-500 border border-gray-100/60">
+                      <Icon className="h-4 w-4" />
+                    </div>
+                    <span className="flex-1 text-xs font-bold text-gray-800">{label}</span>
+                    <ChevronRight className="text-gray-300 h-4 w-4" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Sign Out Trigger */}
+            <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-5 py-4 bg-white rounded-3xl hover:bg-red-50 transition-colors shadow-2xs text-left border border-gray-100">
+              <div className="h-8.5 w-8.5 rounded-xl bg-red-50 flex items-center justify-center border border-red-100/35">
+                <LogOut className="text-red-500 h-4 w-4" />
+              </div>
+              <span className="text-xs font-bold text-red-500">Sign Out Credentials</span>
             </button>
-          </Link>
-        </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-3 mt-5">
-          <div className="bg-orange-50 rounded-2xl p-4 flex flex-col items-center text-center">
-            <Heart className="text-[#FF6A00] h-5 w-5 mb-1" />
-            <p className="text-2xl font-bold text-gray-900">{favCount}</p>
-            <p className="text-xs text-gray-500">Saved Homes</p>
           </div>
-          <div className="bg-gray-50 rounded-2xl p-4 flex flex-col items-center text-center">
-            <Home className="text-gray-500 h-5 w-5 mb-1" />
-            <p className="text-2xl font-bold text-gray-900">{listingCount}</p>
-            <p className="text-xs text-gray-500">{profile?.role === "user" || profile?.role === "tenant" ? "Viewed" : "My Listings"}</p>
-          </div>
-        </div>
-      </div>
 
-      {/* Trust Score Panel */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm"
-      >
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Trust Score</p>
-        <div className="flex items-center gap-4">
-          <TrustScoreRing score={trustScore} />
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-gray-800">
-              {trustScore >= 80 ? "Trusted Member" : trustScore >= 60 ? "Building Trust" : "New Member"}
-            </p>
-            <p className="text-xs text-gray-400 mt-0.5">
-              {trustScore >= 80
-                ? "High credibility — priority listing access"
-                : "Complete verification to improve score"}
-            </p>
-          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mt-3">
-          <VerificationBadge verified={!!profile?.email_verified} label="Email" icon={Mail} />
-          <VerificationBadge verified={!!profile?.identity_verified} label="Identity" icon={Fingerprint} />
-        </div>
-
-        {(!profile?.email_verified || !profile?.identity_verified) && (
-          <Link href="/profile/verify">
-            <div className="mt-3 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-amber-50 border border-amber-100 cursor-pointer hover:bg-amber-100 transition-colors">
-              <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
-              <p className="text-xs text-amber-700 font-medium flex-1">
-                Complete verification to unlock full trust badge
-              </p>
-              <ChevronRight className="h-4 w-4 text-amber-400" />
-            </div>
-          </Link>
-        )}
-      </motion.div>
-
-      {/* Reputation Panel (Landlords & Agents) */}
-      {isLandlordOrAgent && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="mx-4 mt-3 bg-white rounded-2xl p-4 shadow-sm"
-        >
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Reputation Metrics</p>
-          <div className="space-y-3">
-            <div>
-              <div className="flex justify-between text-xs mb-1">
-                <span className="flex items-center gap-1.5 text-gray-600"><Clock className="h-3.5 w-3.5 text-blue-500" /> Response Rate</span>
-                <span className="font-semibold text-gray-800">{Math.round(responseRate)}%</span>
-              </div>
-              <Progress percent={responseRate} showInfo={false} strokeColor="#3B82F6" trailColor="#E5E7EB" size="small" />
-            </div>
-            <div className="flex items-center justify-between pt-1">
-              <span className="flex items-center gap-1.5 text-xs text-gray-600">
-                <TrendingUp className="h-3.5 w-3.5 text-green-500" /> Successful Rentals
-              </span>
-              <span className="text-sm font-bold text-green-600">{successfulRentals}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs text-gray-600">
-                <Star className="h-3.5 w-3.5 text-yellow-500" fill="currentColor" /> Platform Rating
-              </span>
-              <span className="text-sm font-bold text-yellow-600">
-                {successfulRentals > 0 ? "4.7" : "—"}
-              </span>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Agent / Landlord CTA */}
-      {(profile?.role === "agent" || profile?.role === "landlord") && (
-        <div className="px-4 mt-3">
-          <Link href="/agent">
-            <div className="bg-[#FF6A00] hover:bg-[#e05d00] transition-colors text-white rounded-2xl px-4 py-4 flex items-center justify-between shadow-sm cursor-pointer">
-              <div className="flex items-center gap-3">
-                <Home className="h-5 w-5" />
-                <div>
-                  <p className="font-semibold text-sm">Agent Dashboard</p>
-                  <p className="text-white/70 text-xs">Manage your listings</p>
-                </div>
-              </div>
-              <ChevronRight className="h-5 w-5" />
-            </div>
-          </Link>
-        </div>
-      )}
-
-      {profile?.role === "admin" && (
-        <div className="px-4 mt-3">
-          <Link href="/admin">
-            <div className="bg-gray-900 hover:bg-black transition-colors text-white rounded-2xl px-4 py-4 flex items-center justify-between shadow-sm cursor-pointer">
-              <div className="flex items-center gap-3">
-                <LayoutDashboard className="h-5 w-5" />
-                <div>
-                  <p className="font-semibold text-sm">Admin Dashboard</p>
-                  <p className="text-white/70 text-xs">Moderate listings & users</p>
-                </div>
-              </div>
-              <ChevronRight className="h-5 w-5" />
-            </div>
-          </Link>
-        </div>
-      )}
-
-      {/* Menu */}
-      <div className="mx-4 mt-3 bg-white rounded-2xl overflow-hidden shadow-sm">
-        {MENU.map(({ icon: Icon, label, href }, i) => (
-          <Link key={label} href={href}>
-            <div className={`flex items-center gap-3 px-4 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors ${i > 0 ? "border-t border-gray-100" : ""}`}>
-              <div className="h-8 w-8 rounded-xl bg-gray-50 flex items-center justify-center text-gray-500">
-                <Icon className="h-4 w-4" />
-              </div>
-              <span className="flex-1 text-sm font-medium text-gray-800">{label}</span>
-              <ChevronRight className="text-gray-300 h-4 w-4" />
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {/* Sign out */}
-      <div className="mx-4 mt-3 mb-6">
-        <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-4 py-4 bg-white rounded-2xl hover:bg-red-50 transition-colors shadow-sm text-left">
-          <div className="h-8 w-8 rounded-xl bg-red-50 flex items-center justify-center">
-            <LogOut className="text-red-500 h-4 w-4" />
-          </div>
-          <span className="text-sm font-medium text-red-500">Sign Out</span>
-        </button>
-      </div>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function MessagesClient({ conversations, currentUserId }: Message
   return (
     <div className="min-h-screen bg-white" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       <div className="max-w-3xl mx-auto w-full pb-24">
-      <div className="px-4 pt-12 pb-3 border-b border-gray-100">
+      <div className="px-4 pt-12 md:pt-4 pb-3 border-b border-gray-100">
         <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
         <p className="text-gray-400 text-sm mt-0.5">{conversations.length} conversation{conversations.length !== 1 ? "s" : ""}</p>
       </div>
