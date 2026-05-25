@@ -92,7 +92,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col px-6" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
+    <div className="min-h-screen bg-white flex flex-col items-center">
+      <div className="w-full max-w-md flex flex-col px-6 pb-12" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
       {/* Header */}
       <div className="pt-5 flex items-center justify-between mb-8">
         <button
@@ -276,6 +277,7 @@ export default function RegisterPage() {
         Already have an account?{" "}
         <Link href="/login" className="text-[#7B2FBE] font-bold">Sign In</Link>
       </p>
+      </div>
     </div>
   );
 }

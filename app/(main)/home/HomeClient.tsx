@@ -256,7 +256,7 @@ export default function HomeClient({ userName, userAvatar, listings, favoriteIds
               <p className="text-sm text-gray-400 mt-1">Try a different filter</p>
             </motion.div>
           ) : (
-            <motion.div key="list" className="space-y-4 pb-6">
+            <motion.div key="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
               {filtered.map((listing, i) => (
                 <PropertyCard
                   key={listing.id}

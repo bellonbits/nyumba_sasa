@@ -54,6 +54,7 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
+      <div className="max-w-4xl mx-auto w-full pb-12">
       {/* Header */}
       <div className="bg-white px-4 pt-4 pb-5 border-b border-gray-100">
         <div className="flex items-center gap-2 mb-5">
@@ -138,6 +139,7 @@ export default function AgentDashboardClient({ listings: initial, agentName }: {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

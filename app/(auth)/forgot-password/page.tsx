@@ -47,7 +47,8 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col px-6" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
+    <div className="min-h-screen bg-white flex flex-col items-center">
+      <div className="w-full max-w-md flex flex-col px-6 pb-12" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
       <div className="pt-4 mb-8">
         <Link href="/login">
           <Button type="text" icon={<ArrowLeft size={18} />} className="px-0 text-gray-700 flex items-center gap-1.5" />
@@ -70,6 +71,7 @@ export default function ForgotPasswordPage() {
           </Button>
         </Form.Item>
       </Form>
+      </div>
     </div>
   );
 }

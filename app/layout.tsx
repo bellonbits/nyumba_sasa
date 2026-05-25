@@ -42,10 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AntdRegistry>
           <AntdProvider>
-            <div className="min-h-screen md:flex md:items-start md:justify-center md:bg-gray-100">
-              <div className="w-full md:max-w-[430px] md:min-h-screen md:shadow-2xl bg-[#f5f5f5]">
-                {children}
-              </div>
+            <div className="min-h-screen bg-[#F5F5F8] text-gray-900 antialiased">
+              {children}
             </div>
           </AntdProvider>
         </AntdRegistry>

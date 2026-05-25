@@ -179,71 +179,73 @@ export default function OnboardingPage() {
   const safeAreaBottom = { paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" };
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden bg-black font-sans max-w-[430px] mx-auto shadow-2xl">
+    <div className="relative min-h-screen flex flex-col overflow-hidden bg-black font-sans w-full mx-auto">
       
       {/* -------------------- STEP 1: SEGMENT SELECTION -------------------- */}
       {step === "segment" && (
         <div className="flex-1 flex flex-col justify-between p-6 bg-gradient-to-br from-[#100520] via-black to-[#090b16] z-10">
-          <div style={safeAreaTop} className="space-y-3">
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center shadow-lg border border-[#7B2FBE]/20">
-                <Image src="/logo.png" alt="Nyumba Sasa" width={26} height={26} className="object-contain" />
-              </div>
-              <span className="text-white text-lg font-extrabold tracking-tight">
-                Nyumba <span className="text-[#FFE135]">Sasa</span>
-              </span>
-            </div>
-            
-            <h1 className="text-white text-3xl font-extrabold leading-tight">
-              Tell us who you are
-            </h1>
-            <p className="text-gray-400 text-sm">
-              We personalize your search with 100% verified trust metrics tailored exactly to your lifestyle.
-            </p>
-          </div>
-
-          {/* Persona selector grid */}
-          <div className="my-auto py-6 space-y-3">
-            {SEGMENTS.map((seg) => {
-              const IconComponent = SEGMENT_ICONS[seg.id] || Home;
-              return (
-                <motion.button
-                  key={seg.id}
-                  onClick={() => selectSegmentAndAdvance(seg.id)}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full text-left p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#7B2FBE] hover:bg-white/[0.08] transition-all flex items-center gap-4 relative overflow-hidden group"
-                >
-                  <div className="h-12 w-12 rounded-xl bg-[#7B2FBE]/10 border border-[#7B2FBE]/25 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <IconComponent className="h-6 w-6 text-[#7B2FBE] group-hover:text-[#FFE135] transition-colors" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white font-bold text-base leading-none mb-1 group-hover:text-[#FFE135] transition-colors">{seg.label}</p>
-                    <p className="text-gray-400 text-xs truncate leading-none">{seg.desc}</p>
-                  </div>
-                  <ArrowRight className="h-5 w-5 text-gray-600 group-hover:text-white transition-colors" />
-                  <div className="absolute top-0 right-0 h-full w-[2px] bg-gradient-to-b from-transparent via-[#7B2FBE] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Onboarding footer */}
-          <div style={safeAreaBottom} className="space-y-4">
-            <button
-              onClick={handleSkipOrStart}
-              className="w-full h-13 bg-white/10 border border-white/15 text-white font-semibold rounded-full hover:bg-white/15 active:scale-98 transition-all text-sm py-3.5"
-            >
-              Skip and Browse Anonymously
-            </button>
-            <div className="flex justify-center gap-6">
-              {["100% Verified", "Escrow Protection", "Zero Scams"].map((item) => (
-                <div key={item} className="flex items-center gap-1">
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#FFE135]" />
-                  <span className="text-gray-500 text-[10px] font-semibold tracking-wider uppercase">{item}</span>
+          <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col justify-between">
+            <div style={safeAreaTop} className="space-y-3">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-10 w-10 rounded-2xl bg-white flex items-center justify-center shadow-lg border border-[#7B2FBE]/20">
+                  <Image src="/logo.png" alt="Nyumba Sasa" width={26} height={26} className="object-contain" />
                 </div>
-              ))}
+                <span className="text-white text-lg font-extrabold tracking-tight">
+                  Nyumba <span className="text-[#FFE135]">Sasa</span>
+                </span>
+              </div>
+              
+              <h1 className="text-white text-3xl font-extrabold leading-tight">
+                Tell us who you are
+              </h1>
+              <p className="text-gray-400 text-sm">
+                We personalize your search with 100% verified trust metrics tailored exactly to your lifestyle.
+              </p>
+            </div>
+
+            {/* Persona selector grid */}
+            <div className="my-auto py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 space-y-0">
+              {SEGMENTS.map((seg) => {
+                const IconComponent = SEGMENT_ICONS[seg.id] || Home;
+                return (
+                  <motion.button
+                    key={seg.id}
+                    onClick={() => selectSegmentAndAdvance(seg.id)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full text-left p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#7B2FBE] hover:bg-white/[0.08] transition-all flex items-center gap-4 relative overflow-hidden group"
+                  >
+                    <div className="h-12 w-12 rounded-xl bg-[#7B2FBE]/10 border border-[#7B2FBE]/25 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <IconComponent className="h-6 w-6 text-[#7B2FBE] group-hover:text-[#FFE135] transition-colors" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-bold text-base leading-none mb-1 group-hover:text-[#FFE135] transition-colors">{seg.label}</p>
+                      <p className="text-gray-400 text-xs truncate leading-none">{seg.desc}</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-gray-600 group-hover:text-white transition-colors" />
+                    <div className="absolute top-0 right-0 h-full w-[2px] bg-gradient-to-b from-transparent via-[#7B2FBE] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            {/* Onboarding footer */}
+            <div style={safeAreaBottom} className="space-y-4">
+              <button
+                onClick={handleSkipOrStart}
+                className="w-full h-13 bg-white/10 border border-white/15 text-white font-semibold rounded-full hover:bg-white/15 active:scale-98 transition-all text-sm py-3.5"
+              >
+                Skip and Browse Anonymously
+              </button>
+              <div className="flex justify-center gap-6">
+                {["100% Verified", "Escrow Protection", "Zero Scams"].map((item) => (
+                  <div key={item} className="flex items-center gap-1">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#FFE135]" />
+                    <span className="text-gray-500 text-[10px] font-semibold tracking-wider uppercase">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -251,35 +253,32 @@ export default function OnboardingPage() {
 
       {/* -------------------- STEP 2: TALLORED VALUE PROPOSITION & PENICILLIN CAROUSEL -------------------- */}
       {step === "value" && (
-        <div className="flex-1 flex flex-col justify-between relative min-h-screen">
-          
-          {/* Background image crossfade */}
-          <AnimatePresence mode="sync">
-            <motion.div
-              key={slide}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 z-0"
-            >
-              <Image
-                src={slides[slide].image}
-                alt={slides[slide].title}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#100520]/60 via-black/80 to-black" />
-            </motion.div>
-          </AnimatePresence>
+        <div className="flex-1 flex flex-col md:flex-row min-h-screen relative bg-black">
+          {/* Left panel: Image carousel & copywriting */}
+          <div className="relative flex-1 md:w-1/2 flex flex-col justify-between p-6 min-h-[50vh] md:min-h-screen">
+            {/* Background image crossfade */}
+            <AnimatePresence mode="sync">
+              <motion.div
+                key={slide}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8 }}
+                className="absolute inset-0 z-0"
+              >
+                <Image
+                  src={slides[slide].image}
+                  alt={slides[slide].title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#100520]/60 via-black/80 to-black md:bg-black/45" />
+              </motion.div>
+            </AnimatePresence>
 
-          {/* Logo & Change Persona Link */}
-          <div
-            style={safeAreaTop}
-            className="relative px-6 flex items-center justify-between z-10"
-          >
-            <div className="flex items-center gap-2">
+            {/* Header branding on left for desktop */}
+            <div style={safeAreaTop} className="relative z-10 hidden md:flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-white flex items-center justify-center shadow-lg">
                 <Image src="/logo.png" alt="Nyumba Sasa" width={20} height={20} className="object-contain" />
               </div>
@@ -287,170 +286,202 @@ export default function OnboardingPage() {
                 Nyumba <span className="text-[#FFE135]">Sasa</span>
               </span>
             </div>
-            <button
-              onClick={() => setStep("segment")}
-              className="text-xs font-bold text-gray-300 hover:text-white px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center gap-1.5"
-            >
-              <span>Change Persona</span>
-              {(() => {
-                const ActiveIcon = SEGMENT_ICONS[activeSeg.id] || Home;
-                return <ActiveIcon className="h-3.5 w-3.5 text-[#FFE135] shrink-0" />;
-              })()}
-            </button>
-          </div>
 
-          {/* Dynamic slides copywriting */}
-          <div className="relative px-6 pt-12 z-10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={slide}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
-                className="space-y-3"
-              >
-                <div className="inline-flex items-center gap-1.5 bg-[#7B2FBE]/30 backdrop-blur-sm border border-[#7B2FBE]/50 rounded-full px-3 py-1">
-                  <span className="text-white text-[11px] font-bold tracking-wider uppercase">{slides[slide].tag}</span>
-                </div>
-                <h2 className="text-white text-3xl font-extrabold leading-tight">
-                  {slides[slide].title.split("\n").map((line, i) => (
-                    <span key={i} className="block">{line}</span>
-                  ))}
-                </h2>
-                <p className="text-gray-300 text-sm leading-relaxed max-w-[340px]">
-                  {slides[slide].sub}
-                </p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+            {/* Empty spacer on desktop to push copy to bottom */}
+            <div className="hidden md:block" />
 
-          {/* Slide Indicator Dots */}
-          <div className="relative flex justify-center gap-1.5 pt-4 z-10">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setSlide(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === slide ? "w-6 bg-white" : "w-1.5 bg-white/40"
-                }`}
-              />
-            ))}
-          </div>
-
-          {/* PENICILLIN INTERACTIVE VALUE REALIZATION CARD */}
-          <div className="relative px-6 pt-5 pb-2 z-10">
-            <motion.div
-              layout
-              className="bg-white/10 backdrop-blur-xl border border-white/15 rounded-3xl p-5 shadow-2xl relative overflow-hidden"
-            >
-              {/* Card Title Selector */}
-              <div className="flex bg-black/45 rounded-full p-1 border border-white/10 mb-4">
-                <button
-                  onClick={() => setShowPainWay(false)}
-                  className={`flex-1 py-1.5 rounded-full text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
-                    !showPainWay
-                      ? "bg-[#7B2FBE] text-white shadow-md"
-                      : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  <Zap className="h-3.5 w-3.5 text-[#FFE135] fill-current" />
-                  <span>The Nyumba Sasa Way</span>
-                </button>
-                <button
-                  onClick={() => setShowPainWay(true)}
-                  className={`flex-1 py-1.5 rounded-full text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
-                    showPainWay
-                      ? "bg-red-600/90 text-white shadow-md"
-                      : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  <X className="h-3.5 w-3.5 text-red-500" />
-                  <span>The Broken Old Way</span>
-                </button>
-              </div>
-
-              {/* Dynamic Before/After text based on persona */}
+            {/* Dynamic slides copywriting */}
+            <div className="relative pt-12 md:pb-12 z-10">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={showPainWay ? "pain" : "gain"}
-                  initial={{ opacity: 0, x: showPainWay ? 15 : -15 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: showPainWay ? -15 : 15 }}
-                  transition={{ duration: 0.25 }}
+                  key={slide}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35 }}
                   className="space-y-3"
                 >
-                  {showPainWay ? (
-                    <div className="space-y-2">
-                      <p className="text-red-400 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
-                        <XCircle className="text-red-500 h-4 w-4" /> The Wasted Friction
-                      </p>
-                      <p className="text-gray-200 text-sm leading-relaxed">
-                        {activeSeg.pain}
-                      </p>
-                      <div className="pt-2 flex flex-wrap gap-2">
-                        {["Fake listings", "Wasted deposit scams", "No Wi-Fi transparency", "Water blackouts"].map(f => (
-                          <span key={f} className="text-[10px] text-red-300 font-semibold bg-red-950/40 border border-red-900/40 px-2 py-0.5 rounded-full">
-                            {f}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <p className="text-green-400 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
-                        <CheckCircle2 className="text-green-400 h-4 w-4" /> Penicillin Solution
-                      </p>
-                      <p className="text-white text-sm leading-relaxed font-medium">
-                        {activeSeg.gain}
-                      </p>
-                      <div className="pt-2 flex flex-wrap gap-2">
-                        {["100% Audited", "Uptime scores", "1-Tap scheduling", "Direct WhatsApp"].map(f => (
-                          <span key={f} className="text-[10px] text-[#FFE135] font-semibold bg-[#7B2FBE]/20 border border-[#7B2FBE]/40 px-2 py-0.5 rounded-full">
-                            {f}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <div className="inline-flex items-center gap-1.5 bg-[#7B2FBE]/30 backdrop-blur-sm border border-[#7B2FBE]/50 rounded-full px-3 py-1">
+                    <span className="text-white text-[11px] font-bold tracking-wider uppercase">{slides[slide].tag}</span>
+                  </div>
+                  <h2 className="text-white text-3xl md:text-4xl font-extrabold leading-tight">
+                    {slides[slide].title.split("\n").map((line, i) => (
+                      <span key={i} className="block">{line}</span>
+                    ))}
+                  </h2>
+                  <p className="text-gray-300 text-sm leading-relaxed max-w-[340px]">
+                    {slides[slide].sub}
+                  </p>
                 </motion.div>
               </AnimatePresence>
-            </motion.div>
-          </div>
-
-          {/* Bottom CTAs */}
-          <div
-            style={safeAreaBottom}
-            className="relative px-6 pb-6 pt-4 space-y-3 z-10 bg-gradient-to-t from-black via-black/95 to-transparent"
-          >
-            <div className="flex gap-3">
-              <Link href="/register" className="flex-1">
-                <motion.button
-                  whileTap={{ scale: 0.96 }}
-                  className="w-full h-14 bg-[#7B2FBE] hover:bg-[#8e3ee6] text-white text-sm font-extrabold rounded-full flex items-center justify-center gap-2 shadow-xl border border-[#7B2FBE]"
-                >
-                  <span>Create Account</span>
-                  <ArrowRight className="h-4 w-4" />
-                </motion.button>
-              </Link>
-
-              <Link href="/login" className="flex-1">
-                <motion.button
-                  whileTap={{ scale: 0.96 }}
-                  className="w-full h-14 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-full border border-white/15"
-                >
-                  Sign In
-                </motion.button>
-              </Link>
             </div>
 
-            <button
-              onClick={handleSkipOrStart}
-              className="w-full text-center py-2 text-xs font-bold text-gray-400 hover:text-white tracking-wide transition-colors flex items-center justify-center gap-1"
+            {/* Slide Indicator Dots */}
+            <div className="relative flex justify-center md:justify-start gap-1.5 pb-4 z-10">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSlide(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === slide ? "w-6 bg-white" : "w-1.5 bg-white/40"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right panel: Interactivity card & Actions */}
+          <div className="relative flex-1 md:w-1/2 flex flex-col justify-between bg-black md:bg-[#0c0d14] p-6 z-10 md:min-h-screen">
+            {/* Header branding (only mobile header, hidden on desktop) */}
+            <div style={safeAreaTop} className="relative flex items-center justify-between md:hidden z-10 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-xl bg-white flex items-center justify-center shadow-lg">
+                  <Image src="/logo.png" alt="Nyumba Sasa" width={20} height={20} className="object-contain" />
+                </div>
+                <span className="text-white text-md font-extrabold tracking-tight drop-shadow">
+                  Nyumba <span className="text-[#FFE135]">Sasa</span>
+                </span>
+              </div>
+              <button
+                onClick={() => setStep("segment")}
+                className="text-xs font-bold text-gray-300 hover:text-white px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center gap-1.5"
+              >
+                <span>Change Persona</span>
+                {(() => {
+                  const ActiveIcon = SEGMENT_ICONS[activeSeg.id] || Home;
+                  return <ActiveIcon className="h-3.5 w-3.5 text-[#FFE135] shrink-0" />;
+                })()}
+              </button>
+            </div>
+
+            {/* On desktop: Change Persona header */}
+            <div style={safeAreaTop} className="hidden md:flex justify-end mb-6 z-10">
+              <button
+                onClick={() => setStep("segment")}
+                className="text-xs font-bold text-gray-300 hover:text-white px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-2 transition-colors"
+              >
+                <span>Change Persona</span>
+                {(() => {
+                  const ActiveIcon = SEGMENT_ICONS[activeSeg.id] || Home;
+                  return <ActiveIcon className="h-4 w-4 text-[#FFE135] shrink-0" />;
+                })()}
+              </button>
+            </div>
+
+            {/* Interactive Card */}
+            <div className="my-auto py-4">
+              <motion.div
+                layout
+                className="bg-white/10 md:bg-white/[0.03] backdrop-blur-xl border border-white/15 md:border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden max-w-lg mx-auto"
+              >
+                {/* Card Title Selector */}
+                <div className="flex bg-black/45 rounded-full p-1 border border-white/10 mb-4">
+                  <button
+                    onClick={() => setShowPainWay(false)}
+                    className={`flex-1 py-2 rounded-full text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
+                      !showPainWay
+                        ? "bg-[#7B2FBE] text-white shadow-md"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    <Zap className="h-3.5 w-3.5 text-[#FFE135] fill-current" />
+                    <span>The Nyumba Sasa Way</span>
+                  </button>
+                  <button
+                    onClick={() => setShowPainWay(true)}
+                    className={`flex-1 py-2 rounded-full text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 ${
+                      showPainWay
+                        ? "bg-red-600/90 text-white shadow-md"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    <X className="h-3.5 w-3.5 text-red-500" />
+                    <span>The Broken Old Way</span>
+                  </button>
+                </div>
+
+                {/* Dynamic Before/After text based on persona */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={showPainWay ? "pain" : "gain"}
+                    initial={{ opacity: 0, x: showPainWay ? 15 : -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: showPainWay ? -15 : 15 }}
+                    transition={{ duration: 0.25 }}
+                    className="space-y-3"
+                  >
+                    {showPainWay ? (
+                      <div className="space-y-2">
+                        <p className="text-red-400 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
+                          <XCircle className="text-red-500 h-4 w-4" /> The Wasted Friction
+                        </p>
+                        <p className="text-gray-200 text-sm leading-relaxed">
+                          {activeSeg.pain}
+                        </p>
+                        <div className="pt-2 flex flex-wrap gap-2">
+                          {["Fake listings", "Wasted deposit scams", "No Wi-Fi transparency", "Water blackouts"].map(f => (
+                            <span key={f} className="text-[10px] text-red-300 font-semibold bg-red-950/40 border border-red-900/40 px-2 py-0.5 rounded-full">
+                              {f}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <p className="text-green-400 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
+                          <CheckCircle2 className="text-green-400 h-4 w-4" /> Penicillin Solution
+                        </p>
+                        <p className="text-white text-sm leading-relaxed font-medium">
+                          {activeSeg.gain}
+                        </p>
+                        <div className="pt-2 flex flex-wrap gap-2">
+                          {["100% Audited", "Uptime scores", "1-Tap scheduling", "Direct WhatsApp"].map(f => (
+                            <span key={f} className="text-[10px] text-[#FFE135] font-semibold bg-[#7B2FBE]/20 border border-[#7B2FBE]/40 px-2 py-0.5 rounded-full">
+                              {f}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </div>
+
+            {/* Bottom CTAs */}
+            <div
+              style={safeAreaBottom}
+              className="space-y-3 bg-gradient-to-t from-black via-black/95 to-transparent md:bg-transparent max-w-lg mx-auto w-full"
             >
-              <span>EXPLORE FREE PLEDGE & RENTALS</span>
-              <ArrowRight className="h-3 w-3" />
-            </button>
+              <div className="flex gap-3">
+                <Link href="/register" className="flex-1">
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    className="w-full h-14 bg-[#7B2FBE] hover:bg-[#8e3ee6] text-white text-sm font-extrabold rounded-full flex items-center justify-center gap-2 shadow-xl border border-[#7B2FBE]"
+                  >
+                    <span>Create Account</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </motion.button>
+                </Link>
+
+                <Link href="/login" className="flex-1">
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    className="w-full h-14 bg-white/10 hover:bg-white/15 text-white text-sm font-semibold rounded-full border border-white/15"
+                  >
+                    Sign In
+                  </motion.button>
+                </Link>
+              </div>
+
+              <button
+                onClick={handleSkipOrStart}
+                className="w-full text-center py-2 text-xs font-bold text-gray-400 hover:text-white tracking-wide transition-colors flex items-center justify-center gap-1"
+              >
+                <span>EXPLORE FREE PLEDGE & RENTALS</span>
+                <ArrowRight className="h-3 w-3" />
+              </button>
+            </div>
           </div>
         </div>
       )}

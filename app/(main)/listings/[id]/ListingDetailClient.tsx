@@ -209,7 +209,8 @@ export default function ListingDetailClient({ listing: l, whatsappUrl, amenityIc
   } as const;
 
   return (
-    <div className="min-h-screen bg-gray-50" style={{ paddingBottom: "calc(96px + env(safe-area-inset-bottom, 0px))" }}>
+    <div className="min-h-screen bg-[#F5F5F8]">
+      <div className="max-w-4xl mx-auto w-full bg-white shadow-sm border-x border-gray-100/50" style={{ paddingBottom: "calc(96px + env(safe-area-inset-bottom, 0px))" }}>
       
       {/* Property Hero Carousel */}
       <div className="relative">
@@ -824,6 +825,7 @@ export default function ListingDetailClient({ listing: l, whatsappUrl, amenityIc
         />
       )}
 
+      </div>
     </div>
   );
 }

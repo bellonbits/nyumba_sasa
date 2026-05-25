@@ -60,7 +60,8 @@ export default function ChatClient({ listing, partner, messages: initial, curren
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-[#F5F5F8]">
+      <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full bg-white shadow-sm border-x border-gray-100/50 relative overflow-hidden">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 shrink-0" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)" }}>
         <Link href="/messages" className="text-gray-600 p-1 -ml-1"><ArrowLeft size={20} /></Link>
@@ -135,6 +136,7 @@ export default function ChatClient({ listing, partner, messages: initial, curren
           <Send size={18} />
         </button>
       </form>
+      </div>
     </div>
   );
 }

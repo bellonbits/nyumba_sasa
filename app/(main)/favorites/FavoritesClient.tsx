@@ -36,7 +36,7 @@ export default function FavoritesClient({ favorites: initial, userId }: { favori
           </p>
         </div>
       ) : (
-        <div className="space-y-4 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
           {favorites.map((fav) =>
             fav.listing ? (
               <PropertyCard

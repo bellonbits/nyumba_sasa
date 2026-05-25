@@ -105,7 +105,7 @@ export default function SearchPage() {
       </div>
 
       {/* Results */}
-      <div className="px-5 space-y-4 pb-24">
+      <div className="px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-24 space-y-0">
         {loading
           ? [1, 2, 3].map((n) => <PropertyCardSkeleton key={n} />)
           : listings.map((l) => <PropertyCard key={l.id} listing={l} />)}

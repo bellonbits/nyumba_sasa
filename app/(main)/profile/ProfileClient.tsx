@@ -125,6 +125,7 @@ export default function ProfileClient({ profile, email, favCount, listingCount }
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
+      <div className="max-w-3xl mx-auto w-full pb-24">
       
       {/* Header card */}
       <div className="bg-white px-4 pt-12 pb-6">
@@ -306,6 +307,7 @@ export default function ProfileClient({ profile, email, favCount, listingCount }
           </div>
           <span className="text-sm font-medium text-red-500">Sign Out</span>
         </button>
+      </div>
       </div>
     </div>
   );
