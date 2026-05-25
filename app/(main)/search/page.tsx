@@ -51,8 +51,8 @@ export default function SearchPage() {
   return (
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
       {/* Header */}
-      <div className="bg-[#F5F5F8] px-5 pt-12 pb-4">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-[#F5F5F8] px-5 pt-12 pb-4 md:pt-4 md:pb-2">
+        <div className="flex items-center justify-between mb-4 md:hidden">
           <button onClick={() => router.back()} className="h-9 w-9 rounded-full bg-white shadow-sm flex items-center justify-center">
             <ArrowLeft className="text-gray-600 h-5 w-5" />
           </button>
@@ -63,7 +63,7 @@ export default function SearchPage() {
         </div>
 
         {/* Search input */}
-        <div className="flex items-center gap-2 bg-white rounded-full px-4 h-12 shadow-sm border border-gray-100 mb-4">
+        <div className="flex items-center gap-2 bg-white rounded-full px-4 h-12 shadow-sm border border-gray-100 mb-4 max-w-2xl">
           <Search className="w-4 h-4 text-gray-400 shrink-0" />
           <input
             value={query}
@@ -72,43 +72,118 @@ export default function SearchPage() {
             className="flex-1 text-sm text-gray-700 bg-transparent outline-none placeholder:text-gray-400"
           />
         </div>
-
-        {/* Results count */}
-        <div className="mb-3">
-          <h2 className="text-xl font-extrabold text-gray-900">
-            {loading ? "Searching…" : `${listings.length} Properties Found`}
-          </h2>
-          <p className="text-gray-400 text-sm">Matching your search criteria</p>
-        </div>
-
-        {/* Sort chips */}
-        <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
-          {SORT_OPTS.map((s) => (
-            <button
-              key={s}
-              onClick={() => setSort(s)}
-              className={[
-                "shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all",
-                sort === s ? "bg-[#7B2FBE] text-white" : "bg-white text-gray-500 border border-gray-200",
-              ].join(" ")}
-            >
-              {s}
-            </button>
-          ))}
-          <button
-            onClick={() => setDrawerOpen(true)}
-            className="shrink-0 px-3 py-2 rounded-full bg-white border border-gray-200 flex items-center gap-1.5 text-gray-500"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-          </button>
-        </div>
       </div>
 
-      {/* Results */}
-      <div className="px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-24 space-y-0">
-        {loading
-          ? [1, 2, 3].map((n) => <PropertyCardSkeleton key={n} />)
-          : listings.map((l) => <PropertyCard key={l.id} listing={l} />)}
+      {/* Main Grid View */}
+      <div className="px-5 flex flex-col md:flex-row gap-8 pb-24 animate-fade-in">
+        {/* Left Column: Desktop Sticky Filter Sidebar */}
+        <aside className="hidden md:block w-72 shrink-0 bg-white rounded-3xl p-6 shadow-sm border border-gray-100 h-fit sticky top-20">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-5">
+            <span className="font-bold text-gray-900 text-sm">Filters</span>
+            <button
+              onClick={() => { setFilters({ type: "all" }); setPriceRange([0, 500000]); }}
+              className="text-xs text-[#7B2FBE] font-bold hover:underline"
+            >
+              Reset All
+            </button>
+          </div>
+
+          <div className="space-y-5">
+            {/* Location */}
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Location</p>
+              <Select
+                showSearch placeholder="Select a city"
+                value={filters.city || undefined}
+                onChange={(v) => setFilters(f => ({ ...f, city: v }))}
+                onClear={() => setFilters(f => ({ ...f, city: "" }))}
+                allowClear size="middle" className="w-full"
+                options={CITIES.map((c) => ({ value: c, label: c }))}
+              />
+            </div>
+
+            {/* Type */}
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Listing Type</p>
+              <div className="flex gap-2">
+                {[{ v: "all", l: "All" }, { v: "rent", l: "Rent" }, { v: "buy", l: "Buy" }].map(({ v, l }) => (
+                  <button key={v} onClick={() => setFilters(f => ({ ...f, type: v as ListingFilters["type"] }))}
+                    className={`flex-1 py-2 rounded-xl text-xs font-semibold transition-colors ${filters.type === v ? "bg-[#7B2FBE] text-white" : "bg-gray-100 text-gray-600"}`}>
+                    {l}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Price */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Price Range</p>
+              </div>
+              <span className="text-xs text-[#7B2FBE] font-bold block mb-2">{formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}</span>
+              <Slider range min={0} max={500000} step={5000} value={priceRange}
+                onChange={(v) => setPriceRange(v as [number, number])}
+                tooltip={{ formatter: (v) => formatPrice(v ?? 0) }}
+                styles={{ track: { background: "#7B2FBE" }, handle: { borderColor: "#7B2FBE" } }}
+              />
+            </div>
+
+            {/* Bedrooms */}
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Bedrooms</p>
+              <div className="flex gap-1.5">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button key={n} onClick={() => setFilters(f => ({ ...f, bedrooms: f.bedrooms === n ? undefined : n }))}
+                    className={`flex-1 py-2 rounded-xl text-xs font-semibold transition-colors ${filters.bedrooms === n ? "bg-[#7B2FBE] text-white" : "bg-gray-100 text-gray-600"}`}>
+                    {n === 5 ? "5+" : n}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Right Column: Listings grid & counts */}
+        <div className="flex-1">
+          {/* Results count & Sort */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-3 border-b border-gray-100/50">
+            <div>
+              <h2 className="text-xl font-extrabold text-gray-900 leading-tight">
+                {loading ? "Searching…" : `${listings.length} Properties Found`}
+              </h2>
+              <p className="text-gray-400 text-xs">Matching your search criteria</p>
+            </div>
+
+            {/* Sort chips */}
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1">
+              {SORT_OPTS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSort(s)}
+                  className={[
+                    "shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all",
+                    sort === s ? "bg-[#7B2FBE] text-white shadow-sm" : "bg-white text-gray-500 border border-gray-200",
+                  ].join(" ")}
+                >
+                  {s}
+                </button>
+              ))}
+              <button
+                onClick={() => setDrawerOpen(true)}
+                className="md:hidden shrink-0 px-3 py-2 rounded-full bg-white border border-gray-200 flex items-center gap-1.5 text-gray-500"
+              >
+                <SlidersHorizontal className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Results grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            {loading
+              ? [1, 2, 3].map((n) => <PropertyCardSkeleton key={n} />)
+              : listings.map((l) => <PropertyCard key={l.id} listing={l} />)}
+          </div>
+        </div>
       </div>
 
       {/* Filter Drawer */}

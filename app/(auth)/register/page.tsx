@@ -92,8 +92,8 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center">
-      <div className="w-full max-w-md flex flex-col px-6 pb-12" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
+    <div className="min-h-screen bg-[#F5F5F8] md:bg-gradient-to-br md:from-[#f3eefc] md:via-[#F5F5F8] md:to-[#edf3fc] flex flex-col items-center justify-center">
+      <div className="w-full max-w-md flex flex-col px-6 pb-12 md:bg-white md:shadow-2xl md:shadow-purple-500/5 md:border md:border-gray-100/80 md:rounded-3xl md:p-10 md:pb-12 md:my-10" style={{ paddingTop: "env(safe-area-inset-top, 16px)" }}>
       {/* Header */}
       <div className="pt-5 flex items-center justify-between mb-8">
         <button

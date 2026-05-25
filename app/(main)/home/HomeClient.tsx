@@ -99,14 +99,14 @@ export default function HomeClient({ userName, userAvatar, listings, favoriteIds
 
   return (
     <div className="min-h-screen bg-[#F5F5F8]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
-      <div className="px-5 pt-12 pb-4">
+      <div className="px-4 sm:px-6 md:px-2 pt-6 md:pt-2 pb-4">
 
         {/* Top Bar */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex items-center justify-between mb-5"
+          className="flex items-center justify-between mb-5 md:hidden"
         >
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-purple-100 overflow-hidden flex items-center justify-center">
@@ -256,7 +256,7 @@ export default function HomeClient({ userName, userAvatar, listings, favoriteIds
               <p className="text-sm text-gray-400 mt-1">Try a different filter</p>
             </motion.div>
           ) : (
-            <motion.div key="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+            <motion.div key="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-6">
               {filtered.map((listing, i) => (
                 <PropertyCard
                   key={listing.id}

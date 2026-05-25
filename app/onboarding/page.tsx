@@ -184,7 +184,7 @@ export default function OnboardingPage() {
       {/* -------------------- STEP 1: SEGMENT SELECTION -------------------- */}
       {step === "segment" && (
         <div className="flex-1 flex flex-col justify-between p-6 bg-gradient-to-br from-[#100520] via-black to-[#090b16] z-10">
-          <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col justify-between">
+          <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col justify-between">
             <div style={safeAreaTop} className="space-y-3">
               {/* Header */}
               <div className="flex items-center gap-3 mb-6">
@@ -231,7 +231,7 @@ export default function OnboardingPage() {
             </div>
 
             {/* Onboarding footer */}
-            <div style={safeAreaBottom} className="space-y-4">
+            <div style={safeAreaBottom} className="space-y-4 max-w-md mx-auto w-full">
               <button
                 onClick={handleSkipOrStart}
                 className="w-full h-13 bg-white/10 border border-white/15 text-white font-semibold rounded-full hover:bg-white/15 active:scale-98 transition-all text-sm py-3.5"
