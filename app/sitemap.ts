@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://nyumbasasa.com";
+  const baseUrl = "https://nyumba-sasa.vercel.app";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://api.guri24.com:8000";
 
   // Base static routes
@@ -39,11 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const res = await fetch(`${apiUrl}/api/listings`, {
       next: { revalidate: 3600 }, // Cache dynamic paths list for up to 1 hour
     });
-    
+
     if (res.ok) {
       const json = await res.json();
       const listings = json.data || [];
-      
+
       if (Array.isArray(listings)) {
         listings.forEach((listing: any) => {
           routes.push({
