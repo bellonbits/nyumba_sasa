@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const listingTypeName = listing.listing_type === "rent" ? "Rent" : "Sale";
   const title = `${listing.title} | ${listing.bedrooms} Bed for ${listingTypeName} in ${listing.location}, ${listing.city}`;
   const description = `${listing.description ? listing.description.slice(0, 150) : "Vetted and verified housing listings in Africa."}... Price: ${listing.price.toLocaleString()} KES. Find out structural audits and water/power uptime.`;
-  const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0] : "https://nyumbasasa.com/logo.png";
+  const imageUrl = listing.images && listing.images.length > 0 ? listing.images[0] : "https://nyumba-sasa.vercel.app/logo.png";
 
   return {
     title,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       type: "website",
-      url: `https://nyumbasasa.com/listings/${resolvedParams.id}`,
+      url: `https://nyumba-sasa.vercel.app/listings/${resolvedParams.id}`,
       images: [
         {
           url: imageUrl,
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [imageUrl],
     },
     alternates: {
-      canonical: `https://nyumbasasa.com/listings/${resolvedParams.id}`,
+      canonical: `https://nyumba-sasa.vercel.app/listings/${resolvedParams.id}`,
     },
   };
 }

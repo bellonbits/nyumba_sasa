@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: ["/", "/home", "/search", "/listings/"],
       disallow: ["/api/", "/admin/", "/messages/", "/profile/", "/favorites/"],
     },
-    sitemap: "https://nyumbasasa.com/sitemap.xml",
+    sitemap: "https://nyumba-sasa.vercel.app/sitemap.xml",
   };
 }

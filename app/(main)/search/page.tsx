@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   description: "Search and filter high-quality vetted real estate listings across Africa. Find houses for rent and sale with structural audits and verified ownership.",
   keywords: ["search properties", "vetted apartments", "houses for rent", "homes for sale", "real estate search", "nyumba sasa search"],
   alternates: {
-    canonical: "https://nyumbasasa.com/search",
+    canonical: "https://nyumba-sasa.vercel.app/search",
   },
   openGraph: {
     title: "Search Vetted Houses & Properties | Nyumba Sasa",
     description: "Search and filter high-quality vetted real estate listings across Africa. Find houses for rent and sale with structural audits and verified ownership.",
-    url: "https://nyumbasasa.com/search",
+    url: "https://nyumba-sasa.vercel.app/search",
     type: "website",
   },
   twitter: {

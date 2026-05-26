@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     title: "Nyumba Sasa — Africa's Vetted Housing Marketplace",
     description: "Find high-quality, verified houses for rent and sale with structural audits and neighborhood reliability scores.",
     type: "website",
-    url: "https://nyumbasasa.com",
+    url: "https://nyumba-sasa.vercel.app",
     siteName: "Nyumba Sasa",
     images: [
       {
-        url: "https://nyumbasasa.com/logo.png",
+        url: "https://nyumba-sasa.vercel.app/logo.png",
         width: 512,
         height: 512,
         alt: "Nyumba Sasa Logo",
@@ -32,10 +32,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nyumba Sasa — Africa's Vetted Housing Marketplace",
     description: "Find high-quality, verified houses for rent and sale with structural audits and neighborhood reliability scores.",
-    images: ["https://nyumbasasa.com/logo.png"],
+    images: ["https://nyumba-sasa.vercel.app/logo.png"],
   },
   alternates: {
-    canonical: "https://nyumbasasa.com",
+    canonical: "https://nyumba-sasa.vercel.app",
   },
   robots: {
     index: true,
@@ -56,10 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Nyumba Sasa",
-    "url": "https://nyumbasasa.com",
+    "url": "https://nyumba-sasa.vercel.app",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://nyumbasasa.com/search?q={search_term_string}",
+      "target": "https://nyumba-sasa.vercel.app/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -68,8 +68,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Nyumba Sasa",
-    "url": "https://nyumbasasa.com",
-    "logo": "https://nyumbasasa.com/logo.png",
+    "url": "https://nyumba-sasa.vercel.app",
+    "logo": "https://nyumba-sasa.vercel.app/logo.png",
     "sameAs": [
       "https://facebook.com/nyumbasasa",
       "https://twitter.com/nyumbasasa",
